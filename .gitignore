@@ -13,6 +13,8 @@
 !/shipments_tracker/log/.keep
 !/shipments_tracker/tmp/.keep
 
+/tmp/rubycritic/rubycritic-app/
+
 # Ignore pidfiles, but keep the directory.
 /shipments_tracker/tmp/pids/*
 !/shipments_tracker/tmp/pids/
@@ -29,3 +31,4 @@
 
 # Ignore master key for decrypting credentials and more.
 /shipments_tracker/config/master.key
+tmp/rubycritic/.DS_Store
