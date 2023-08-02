@@ -38,14 +38,6 @@ to run migrations use the following command:
 
 ## Development
 
-### Configure environment variables
-1. Copy .env.example
-2. Rename it from
-
-        env copy.example to .env
-3. Fill the value of the variables
-(You can ask them from the technical leader)
-
 ### Running the rails server
     rails server
 
