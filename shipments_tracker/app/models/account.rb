@@ -7,4 +7,6 @@ class Account < ApplicationRecord
  
    # Validación para asegurarse de que el campo id sea único
    validates :id, uniqueness: true
+
+   has_many :shipments
 end

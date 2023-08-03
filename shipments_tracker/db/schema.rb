@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_04_214644) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_03_025534) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string "company_name"
-    t.boolean "active"
+    t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -42,10 +42,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_04_214644) do
   create_table "shipments", force: :cascade do |t|
     t.bigint "account_id"
     t.string "status"
-    t.string "tracking_history", default: [], array: true
     t.string "tracking_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.jsonb "tracking_history", default: {}
     t.index ["account_id"], name: "index_shipments_on_account_id"
     t.index ["id"], name: "index_shipments_on_id", unique: true
     t.index ["tracking_number"], name: "index_shipments_on_tracking_number"
