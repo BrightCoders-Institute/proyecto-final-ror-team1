@@ -1,0 +1,8 @@
+class ParserRule < ApplicationRecord
+  validates :code, presence: true, length: { maximum: 50 }
+  validates :description, presence: true
+  validates :carrier_id, presence: true, numericality: { only_integer: true }
+  validates :internal_code, presence: true, uniqueness: true d
+
+  belongs_to :carrier
+end
