@@ -27,16 +27,18 @@ RailsAdmin.config do |config|
   config.included_models = %w[
     Shipment
     Account
+    User
+    Carrier
+    ParserRule
   ]
-
 
   config.model 'Shipment' do
     edit do
-      # field :carrier_id, :enum do
-      #   enum do
-      #   Carrier.all.map { |carrier| [carrier.name, carrier.id] }
-      #   end
-      # end
+      field :carrier_id, :enum do
+        enum do
+          Carrier.all.map { |carrier| [carrier.name, carrier.id] }
+        end
+      end
       fields :tracking_number, :account, :tracking_history do
         read_only true
       end
@@ -63,30 +65,43 @@ RailsAdmin.config do |config|
     end
   end
 
-  # config.model 'ParserRule' do
-  #   edit do
-  #     fields :description, :code
-  #     field :internal_code, :enum do
-  #       enum do
-  #         %w[
-  #           REGISTERED
-  #           IN_TRANSIT
-  #           LAST_MILE
-  #           DELIVERED
-  #           DELAYED
-  #           LOST
-  #           STOLEN
-  #           CANCELED
-  #         ]
-  #       end
-  #     end
-  #     field :carrier_id, :enum do
-  #       enum do
-  #         Carrier.all.map { |carrier| [carrier.name, carrier.id] }
-  #       end
-  #     end
-  #   end
-  # end
+  config.model 'ParserRule' do
+    edit do
+      fields :description, :code
+      field :internal_code, :enum do
+        enum do
+          %w[
+            REGISTERED
+            IN_TRANSIT
+            LAST_MILE
+            DELIVERED
+            DELAYED
+            LOST
+            STOLEN
+            CANCELED
+          ]
+        end
+      end
+      field :carrier_id, :enum do
+        enum do
+          Carrier.all.map { |carrier| [carrier.name, carrier.id] }
+        end
+      end
+    end
+  end
+
+  config.model 'User' do
+    edit do
+      fields :email, :confirmed_at do
+        read_only true
+      end
+      field :account_id, :enum do
+        enum do
+          Account.all.map { |account| [account.company_name, account.id] }
+        end
+      end
+    end
+  end
 
   config.actions do
     dashboard                     # mandatory

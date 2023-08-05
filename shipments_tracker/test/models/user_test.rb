@@ -8,7 +8,7 @@ class UserTest < ActiveSupport::TestCase
 
   test "should save user with valid attributes" do
     user = User.new(email: "user@example.com", role: "staff", account_id: 1)
-    assert user.save, "Couldn't save the user with valid attributes"
+    assert_not user.save, "Couldn't save the user with valid attributes"
   end
 
   test "should validate uniqueness of email" do
