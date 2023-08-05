@@ -5,7 +5,7 @@ class ShipmentTest < ActiveSupport::TestCase
     @account = Account.create(company_name: 'test', active: true)
     @shipment = Shipment.new(
       account_id: @account.id,
-      status: "registered",
+      status: "REGISTERED",
       tracking_history: ["Event 1"],
       tracking_number: "ABC123"
     )

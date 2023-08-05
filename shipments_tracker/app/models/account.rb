@@ -4,7 +4,7 @@ class Account < ApplicationRecord
 
    # Validación para asegurarse de que el campo active sea un valor booleano
    validates :active, inclusion: { in: [true, false] }
- 
-   # Validación para asegurarse de que el campo id sea único
-   validates :id, uniqueness: true
+
+   has_many :shipments
+   has_many :users
 end
