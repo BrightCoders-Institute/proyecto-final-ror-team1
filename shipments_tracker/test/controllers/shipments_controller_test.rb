@@ -5,4 +5,9 @@ class ShipmentsControllerTest < ActionDispatch::IntegrationTest
     get shipments_show_url
     assert_response :success
   end
+
+  test "should get index" do
+    get shipments_index_url
+    assert_response :success
+  end
 end
