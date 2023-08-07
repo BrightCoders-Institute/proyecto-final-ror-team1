@@ -25,4 +25,9 @@ class ShipmentsControllerTest < ActionDispatch::IntegrationTest
     get shipments_url, params: { status: 'DELIVERED' }
     assert_response :success
   end
+  
+  test "should get index" do
+    get shipments_index_url
+    assert_response :success
+  end
 end
