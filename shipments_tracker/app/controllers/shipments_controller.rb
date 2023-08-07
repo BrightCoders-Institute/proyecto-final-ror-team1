@@ -10,4 +10,8 @@ class ShipmentsController < ApplicationController
   def find_shipment
     Shipment.find(params[:id])
   end
+
+  def index
+    @shipments = Shipment.all
+  end
 end
