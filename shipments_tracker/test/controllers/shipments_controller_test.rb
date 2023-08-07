@@ -14,7 +14,7 @@ class ShipmentsControllerTest < ActionDispatch::IntegrationTest
     get shipments_url
     assert_response :success
   end
-
+  
   test "should get index with filtered params" do
     get shipments_url, params: { carrier_name: 'FEDEX' }
     assert_response :success
