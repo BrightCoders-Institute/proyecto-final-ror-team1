@@ -22,6 +22,8 @@ class ShipmentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should get index with filtered params" do
     get shipments_url, params: { status: 'DELIVERED' }
+  test "should get show" do
+    get shipments_show_url
     assert_response :success
   end
 end
