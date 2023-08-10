@@ -1,7 +1,6 @@
 require "test_helper"
 
 class ShipmentsControllerTest < ActionDispatch::IntegrationTest
-
   setup do
     @shipment = shipments(:one)
   end
@@ -23,11 +22,6 @@ class ShipmentsControllerTest < ActionDispatch::IntegrationTest
 
   test "should get index with filtered params" do
     get shipments_url, params: { status: 'DELIVERED' }
-    assert_response :success
-  end
-  
-  test "should get index" do
-    get shipments_index_url
     assert_response :success
   end
 end
