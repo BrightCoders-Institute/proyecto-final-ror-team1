@@ -25,3 +25,4 @@ class ShipmentsController < ApplicationController
   def permitted_params
     params.permit(:carrier_name, :status)
   end
+end
