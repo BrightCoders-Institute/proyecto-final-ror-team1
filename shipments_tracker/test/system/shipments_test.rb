@@ -5,10 +5,10 @@ class ShipmentsTest < ApplicationSystemTestCase
     @shipment = shipments(:one)
   end
 
-  # test "visiting the index" do
-  #   visit shipments_url
-  #   assert_selector "h1", text: "Shipments"
-  # end
+    test "visiting the index" do
+    visit shipments_url
+    assert_selector "h1", text: "Shipments"
+    end
 
   #   test "should create shipment" do
   #     visit shipments_url
