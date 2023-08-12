@@ -39,21 +39,10 @@ RailsAdmin.config do |config|
           Carrier.all.map { |carrier| [carrier.name, carrier.id] }
         end
       end
-      fields :tracking_number, :account, :tracking_history do
-        read_only true
-      end
+      fields :tracking_number, :account, :tracking_history
       field :status, :enum do
         enum do
-          %w[
-            REGISTERED
-            IN_TRANSIT
-            LAST_MILE
-            DELIVERED
-            DELAYED
-            LOST
-            STOLEN
-            CANCELED
-          ]
+          Shipment::STATUSES
         end
       end
     end
