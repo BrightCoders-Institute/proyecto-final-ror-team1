@@ -3,24 +3,25 @@
 <%= form_tag shipments_index_path, method: :get do %>
   <div>
     <%= label_tag :status, "Status:" %>
-    <%= select_tag :status, options_for_select(["", "IN TRANSIT", "DELIVERED"], params[:status]) %>
+    <%= select_tag :status, options_for_select(shipment_statuses, params[:status]) %>
   </div>
 
   <div>
     <%= label_tag :carrier_name, "Carrier:" %>
-    <%= select_tag :carrier_name, options_for_select(["", "FEDEX", "DHL"], params[:carrier_name]) %>
+    <%= select_tag :carrier_name, options_for_select(carrier_names, params[:carrier_name]) %>
   </div>
 
   <div>
     <%= submit_tag "Filter" %>
   </div>
 <% end %>
-
+<br>
 <table>
   <thead>
     <tr>
       <th>Status</th>
       <th>Carrier</th>
+      <th>Tracking number</th>
     </tr>
   </thead>
   <tbody>
@@ -28,6 +29,7 @@
       <tr>
         <td><%= shipment.status %></td>
         <td><%= shipment.carrier.name %></td>
+        <td><%= shipment.tracking_number %></td>
       </tr>
     <% end %>
   </tbody>
