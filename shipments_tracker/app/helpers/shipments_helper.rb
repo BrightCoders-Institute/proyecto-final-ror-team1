@@ -11,7 +11,3 @@ module ShipmentsHelper
     Shipment::STATUSES
   end
 end
-
-# @shipments.each do |shipment|
-#   tracking_status(shipment.status)
-# end
