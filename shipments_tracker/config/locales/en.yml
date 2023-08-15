@@ -31,3 +31,8 @@
 
 en:
   hello: "Hello world"
+  shipments:
+    status:
+      registered: "Registrado"
+      in_transit: "En camino"
+      delayed: "retrasado"
