@@ -32,3 +32,4 @@
 # Ignore master key for decrypting credentials and more.
 /shipments_tracker/config/master.key
 tmp/rubycritic/.DS_Store
+.DS_Store
