@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ChangeTrackingHistoryType < ActiveRecord::Migration[7.0]
   def up
     remove_column :shipments, :tracking_history

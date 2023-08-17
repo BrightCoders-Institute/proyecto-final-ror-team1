@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddCarrierReferenceToParserRule < ActiveRecord::Migration[7.0]
   def up
     remove_column :parser_rules, :carrier_id

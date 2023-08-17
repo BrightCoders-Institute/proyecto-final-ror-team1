@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ParserRule < ApplicationRecord
   validates :code, presence: true, length: { maximum: 50 }
   validates :description, presence: true
