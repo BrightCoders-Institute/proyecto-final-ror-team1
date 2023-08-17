@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ShipmentsHelper
   def tracking_status(status)
     I18n.t("shipments.status.#{status.downcase}")

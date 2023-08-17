@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   get 'shipments/index'
   get '/shipments/status/:status', to: 'shipments#index', as: :shipments_by_status

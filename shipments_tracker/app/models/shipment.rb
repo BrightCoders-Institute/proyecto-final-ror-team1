@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Shipment < ApplicationRecord
-  STATUSES = %w(REGISTERED IN_TRANSIT DELAYED LOST STOLEN DELIVERED)
+  STATUSES = %w[REGISTERED IN_TRANSIT DELAYED LOST STOLEN DELIVERED].freeze
   # Validación: El campo account_id no puede estar vacío
   validates :account_id, presence: true
 
@@ -12,4 +14,3 @@ class Shipment < ApplicationRecord
   belongs_to :account
   belongs_to :carrier
 end
-

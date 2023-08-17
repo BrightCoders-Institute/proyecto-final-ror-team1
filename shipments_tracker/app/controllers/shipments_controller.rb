@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ShipmentsController < ApplicationController
   def show
     @shipment = find_shipment
@@ -6,18 +8,16 @@ class ShipmentsController < ApplicationController
   def find_shipment
     Shipment.find(params[:id])
   end
-  
+
   def index
-     @shipments = Shipment.where(account_id: current_account.id)
+    @shipments = Shipment.where(account_id: current_account.id)
 
-      if permitted_params[:status].present?
-        @shipments = @shipments.where(status: permitted_params[:status])
-      end
+    @shipments = @shipments.where(status: permitted_params[:status]) if permitted_params[:status].present?
 
-      if permitted_params[:carrier_name].present?
-        carrier = Carrier.find_by(name: permitted_params[:carrier_name])
-        @shipments = @shipments.where(carrier: carrier)
-      end
+    return unless permitted_params[:carrier_name].present?
+
+    carrier = Carrier.find_by(name: permitted_params[:carrier_name])
+    @shipments = @shipments.where(carrier: carrier)
   end
 
   private
