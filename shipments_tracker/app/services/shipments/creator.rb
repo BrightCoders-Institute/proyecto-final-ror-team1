@@ -16,13 +16,13 @@ module Shipments
       raise ShipmentError.new("Error creating shipment: #{e.message}")
     end
 
+    private
+
     def validate_fields_present
       unless @params[:carrier_name].present? && @params[:tracking_number].present?
         raise ShipmentError, 'Fields cannot be empty.'
       end
     end
-
-    private
 
     def set_carrier
       @carrier = Carrier.find_by!(name: @carrier_name)
