@@ -40,6 +40,10 @@ class ShipmentsController < ApplicationController
     params.require(:shipment).permit(:carrier_name, :tracking_number)
   end
 
+  def shipment_params
+    params.require(:shipment).permit(:carrier_name, :tracking_number)
+  end
+
   def permitted_params
     params.permit(:carrier_name, :status, :tracking_number, :carrier_id, :tracking_history)
   end
