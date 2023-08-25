@@ -11,7 +11,6 @@ class ShipmentsController < ApplicationController
 
   def create
     creator = Shipments::Creator.new(params[:shipment].merge(account_id: current_account.id))
-
     if creator.call
       redirect_to shipments_index_path, notice: 'Shipment created successfully.'
     else
