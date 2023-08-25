@@ -33,7 +33,7 @@ class ShipmentsController < ApplicationController
   private
 
   def find_shipment
-    # Shipment.find(params[:id])
+    Shipment.find(params[:id])
   end
 
   def shipment_params
