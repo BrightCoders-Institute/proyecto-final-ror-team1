@@ -5,8 +5,18 @@ class ShipmentsController < ApplicationController
     @shipment = find_shipment
   end
 
-  def find_shipment
-    Shipment.find(params[:id])
+  def new
+    @shipment = Shipment.new
+  end
+
+  def create
+    creator = Shipments::Creator.new(params[:shipment].merge(account_id: current_account.id))
+
+    if creator.call
+      redirect_to shipments_index_path, notice: 'Shipment created successfully.'
+    else
+      render :new
+    end
   end
 
   def index
@@ -22,7 +32,15 @@ class ShipmentsController < ApplicationController
 
   private
 
+  def find_shipment
+    Shipment.find(params[:id])
+  end
+
+  def shipment_params
+    params.require(:shipment).permit(:carrier_name, :tracking_number)
+  end
+
   def permitted_params
-    params.permit(:carrier_name, :status)
+    params.permit(:carrier_name, :status, :tracking_number, :carrier_id, :tracking_history)
   end
 end
