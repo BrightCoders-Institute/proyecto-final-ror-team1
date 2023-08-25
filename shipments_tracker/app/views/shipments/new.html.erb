@@ -1,0 +1,15 @@
+<h1>Create Shipment</h1>
+
+<%= form_with(model: @shipment, url: create_shipment_path) do |f| %>
+  <div>
+    <%= f.label :carrier_name %>
+    <%= f.text_field :carrier_name %>
+  </div>
+  <div>
+    <%= f.label :tracking_number %>
+    <%= f.text_field :tracking_number %>
+  </div>
+  <div>
+    <%= f.submit 'Create shipment' %>
+  </div>
+<% end %>

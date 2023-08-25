@@ -7,12 +7,19 @@ module Shipments
     end
 
     def call
+      validate_fields_present
       set_carrier
       create_shipment
 
       true
     rescue StandardError => e
-      raise ShipmentError, e.message
+      raise ShipmentError.new("Error al crear el envío: #{e.message}")
+    end
+
+    def validate_fields_present
+      unless @params[:carrier_name].present? && @params[:tracking_number].present?
+        raise ShipmentError, 'Los campos no pueden estar vacíos.'
+      end
     end
 
     private

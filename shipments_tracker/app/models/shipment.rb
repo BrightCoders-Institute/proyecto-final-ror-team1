@@ -14,7 +14,7 @@ class Shipment < ApplicationRecord
   belongs_to :account
   belongs_to :carrier
 
-  tracking_shipment after: :create
+  # tracking_shipment after: :create
 
   def tracking_shipment
     #call service to tracking

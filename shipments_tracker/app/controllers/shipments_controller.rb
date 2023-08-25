@@ -5,13 +5,16 @@ class ShipmentsController < ApplicationController
     @shipment = find_shipment
   end
 
+  def new
+    @shipment = Shipment.new
+  end
+
   def create
-    creator = Shipments::Creator.new(permitted_params.merge(account_id: current_account.id))
+    creator = Shipments::Creator.new(params[:shipment].merge(account_id: current_account.id))
 
     if creator.call
-      redirect_to :back, notice: 'Envío creado exitosamente.'
+      redirect_to shipments_index_path, notice: 'Shipment created successfully.'
     else
-      flash.now[:alert] = result[:errors].join(', ')
       render :new
     end
   end
@@ -30,7 +33,11 @@ class ShipmentsController < ApplicationController
   private
 
   def find_shipment
-    Shipment.find(params[:id])
+    # Shipment.find(params[:id])
+  end
+
+  def shipment_params
+    params.require(:shipment).permit(:carrier_name, :tracking_number)
   end
 
   def permitted_params

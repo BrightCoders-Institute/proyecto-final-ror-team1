@@ -8,5 +8,8 @@ Rails.application.routes.draw do
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
+  get '/shipments/new', to: 'shipments#new', as: :new_shipment
+  post '/shipments', to: 'shipments#create', as: 'create_shipment'
   get '/shipments/:id', to: 'shipments#show', as: 'shipment'
+
 end
