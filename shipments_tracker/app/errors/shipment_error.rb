@@ -1,0 +1,2 @@
+class ShipmentError < StandardError
+end

@@ -11,6 +11,9 @@
   </head>
 
   <body>
+  <% flash.each do |key, value| %>
+    <div class="flash <%= key %>"><%= value %></div>
+  <% end %>
     <main class="container mx-auto mt-28 px-5 flex">
       <%= yield %>
     </main>
