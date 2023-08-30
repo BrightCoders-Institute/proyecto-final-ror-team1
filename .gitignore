@@ -5,31 +5,31 @@
 #   git config --global core.excludesfile '~/.gitignore_global'
 
 # Ignore bundler config.
-/shipments_tracker/.bundle
+/.bundle
 
 # Ignore all logfiles and tempfiles.
-/shipments_tracker/log/*
-/shipments_tracker/tmp/*
-!/shipments_tracker/log/.keep
-!/shipments_tracker/tmp/.keep
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
 
 /tmp/rubycritic/rubycritic-app/
 
 # Ignore pidfiles, but keep the directory.
-/shipments_tracker/tmp/pids/*
-!/shipments_tracker/tmp/pids/
-!/shipments_tracker/tmp/pids/.keep
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
 
 # Ignore uploaded files in development.
-/shipments_tracker/storage/*
-!/shipments_tracker/storage/.keep
-/shipments_tracker/tmp/storage/*
-!/shipments_tracker/tmp/storage/
-!/shipments_tracker/tmp/storage/.keep
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
 
-/shipments_tracker/public/assets
+/public/assets
 
 # Ignore master key for decrypting credentials and more.
-/shipments_tracker/config/master.key
+/config/master.key
 tmp/rubycritic/.DS_Store
 .DS_Store
