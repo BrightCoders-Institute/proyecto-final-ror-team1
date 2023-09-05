@@ -33,7 +33,7 @@
     <% @shipments.each do |shipment| %>
       <tr>
         <td class="pt-4 pl-2"><%= DateTime.parse(shipment.created_at.to_s).strftime('%d %b %Y') %></td>
-        <td></td>
+        <td>Receiver</td>
         <td><%= shipment.carrier.name %></td>
         <td><%= shipment.tracking_number %></td>
         <td><%= shipment.status %></td>
