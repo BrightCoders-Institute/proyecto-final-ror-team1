@@ -1,15 +1,16 @@
-<h1>Create Shipment</h1>
-
-<%= form_with(model: @shipment, url: create_shipment_path) do |f| %>
-  <div>
-    <%= f.label :carrier_name %>
-    <%= f.text_field :carrier_name %>
-  </div>
-  <div>
-    <%= f.label :tracking_number %>
-    <%= f.text_field :tracking_number %>
-  </div>
-  <div>
-    <%= f.submit 'Create shipment' %>
-  </div>
-<% end %>
+<div class="bg-white p-8 shadow-md rounded-md w-96">
+  <h1 class="text-2xl font-semibold mb-4">Create Shipment</h1>
+    <%= form_with(model: @shipment, url: create_shipment_path, html: { class: 'space-y-4' }) do |f| %>
+      <div>
+        <%= f.label :carrier_name, class: 'font-semibold' %>
+        <%= f.text_field :carrier_name, class: 'w-full p-2 border rounded' %>
+      </div>
+      <div>
+        <%= f.label :tracking_number, class: 'font-semibold' %>
+        <%= f.text_field :tracking_number, class: 'w-full p-2 border rounded' %>
+      </div>
+      <div>
+        <%= f.submit 'Create Shipment', class: 'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600' %>
+      </div>
+    <% end %>
+</div>
