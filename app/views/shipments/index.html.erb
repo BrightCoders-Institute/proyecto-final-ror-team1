@@ -1,5 +1,6 @@
-<div class="w-full h-16 border-b-2 border-black border-solid flex items-center drop-shadow-lg">
+<div class="w-full h-16 border-b-2 border-black border-solid flex items-center justify-between drop-shadow-lg">
   <h1 class="ml-6">Shipments</h1>
+  <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'inline-block border border-red-700 border-solid w-20 h-8 text-red-700 rounded-md font-medium pt-0.5 text-center hover:bg-red-100 mr-7'%>
 </div>
 
 <div class="mt-4 mx-6 flex items-center justify-between">
@@ -27,6 +28,7 @@
       <th class="w-36">Carrier</th>
       <th class="w-72">Tracking number</th>
       <th class="w-36">Status</th>
+      <th class="w-36">Details</th>
     </tr>
   </thead>
   <tbody>
@@ -37,6 +39,7 @@
         <td><%= shipment.carrier.name %></td>
         <td><%= shipment.tracking_number %></td>
         <td><%= shipment.status %></td>
+        <td><%= link_to 'Info', shipment, class: 'inline-block border-2 border-sky-700 border-solid w-12 h-8 text-sky-700 rounded-md font-medium pt-0.5 text-center hover:bg-slate-100'%></td>
       </tr>
     <% end %>
   </tbody>
