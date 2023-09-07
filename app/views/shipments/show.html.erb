@@ -1,4 +1,7 @@
-<%= link_to 'My shipments', 'index', class: 'h-20 flex items-center ml-14 text-sky-700 text-sm font-semibold' %>
+<div class="w-full h-16 flex items-center justify-between">
+  <%= link_to 'My shipments', shipments_index_path, class: 'ml-14 inline-block border border-sky-700 border-solid w-32 h-8 text-sky-700 rounded-md font-medium pt-1 text-center hover:bg-sky-100' %>
+  <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'inline-block border border-red-700 border-solid w-20 h-8 text-red-700 rounded-md font-medium pt-0.5 text-center hover:bg-red-100 mr-7'%>
+</div>
 
 <div class="flex w-full h-screen justify-center">
 
@@ -72,5 +75,3 @@
     <%end%>
   </div>
 </div>
-
-
