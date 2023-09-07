@@ -1,4 +1,11 @@
-<h1>Create Shipment</h1>
+<div class="w-full h-16 border-b-2 border-black border-solid flex items-center justify-between drop-shadow-lg">
+  <h1 class="ml-6">Create Shipment</h1>
+
+  <div class="w-80 flex items-center justify-between">
+  <%= link_to 'My shipments', shipments_index_path, class: 'ml-14 inline-block border border-sky-700 border-solid w-32 h-8 text-sky-700 rounded-md font-medium pt-1 text-center hover:bg-sky-100' %>
+  <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'inline-block border border-red-700 border-solid w-20 h-8 text-red-700 rounded-md font-medium pt-0.5 text-center hover:bg-red-100 mr-7'%>
+  </div>
+</div>
 
 <%= form_with(model: @shipment, url: create_shipment_path) do |f| %>
   <div>
