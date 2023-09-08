@@ -4,7 +4,7 @@
   <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     <div class="mb-4">
       <%= f.label :email, class: 'font-semibold text-gray-900' %>
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: 'w-full p-2 border rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200' %>
+      <%= f.email_field :email, required: true, autocomplete: "email", class: 'w-full p-2 border rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200' %>
     </div>
 
     <div class="mb-4">

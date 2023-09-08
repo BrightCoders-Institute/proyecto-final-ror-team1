@@ -5,8 +5,8 @@
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="mb-4">
-      <%= f.label :email, class: "font-semibold text-gray-900" %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full p-2 border rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" %>
+      <%= f.label :email, class: "font-semibold text-gray-900" %>
+      <%= f.email_field :email, required: true, autocomplete: "email", class: "w-full p-2 border rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" %>
     </div>
 
     <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
@@ -17,18 +17,17 @@
       <%= f.label :password, class: "font-semibold text-gray-900" %> <i class="text-sm text-gray-600">(leave blank if you don't want to change it)</i><br />
       <%= f.password_field :password, autocomplete: "new-password", class: "w-full p-2 border rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" %>
       <% if @minimum_password_length %>
-        <br />
         <em><%= @minimum_password_length %> characters minimum</em>
       <% end %>
     </div>
 
     <div class="mb-4">
-      <%= f.label :password_confirmation, class: "font-semibold text-gray-900" %><br />
+      <%= f.label :password_confirmation, class: "font-semibold text-gray-900" %>
       <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full p-2 border rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" %>
     </div>
 
     <div class="mb-4">
-      <%= f.label :current_password, class: "font-semibold text-gray-900" %> <i class="text-sm text-gray-600">(we need your current password to confirm your changes)</i><br />
+      <%= f.label :current_password, class: "font-semibold text-gray-900" %> <i class="text-sm text-gray-600">(we need your current password to confirm your changes)</i>
       <%= f.password_field :current_password, autocomplete: "current-password", class: "w-full p-2 border rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" %>
     </div>
 
