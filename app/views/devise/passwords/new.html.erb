@@ -5,8 +5,8 @@
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="mb-4">
-      <%= f.label :email, class: "font-semibold text-gray-900" %><br />
-      <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full p-2 border rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" %>
+      <%= f.label :email, class: "font-semibold text-gray-900" %>
+      <%= f.email_field :email, required: true, autocomplete: "email", class: "w-full p-2 border rounded border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-200" %>
     </div>
 
     <div class="mb-4">
@@ -15,9 +15,8 @@
   <% end %>
 
   <div class="text-center">
-    <a href="<%= new_user_registration_path %>" class="text-blue-500 hover:underline font-semibold">Sign up</a>
+    <%=link_to 'Sign up', new_user_registration_path, class: 'text-blue-500 hover:underline font-semibold'%>
     <span class="text-gray-500 mx-2">|</span>
-    <a href="<%= new_user_session_path %>" class="text-blue-500 hover:underline font-semibold">Log in</a>
+    <%=link_to 'Log in', new_user_session_path, class: 'text-blue-500 hover:underline font-semibold'%>
   </div>
 </div>
-  </div>
