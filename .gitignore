@@ -39,3 +39,4 @@ tmp/rubycritic/.DS_Store
 .DS_Store
 *.env
 .env
+log/development.log
