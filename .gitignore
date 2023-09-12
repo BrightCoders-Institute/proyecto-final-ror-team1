@@ -33,4 +33,5 @@
 /config/master.key
 tmp/rubycritic/.DS_Store
 .DS_Store
-log/development.log
+*.env
+.env
