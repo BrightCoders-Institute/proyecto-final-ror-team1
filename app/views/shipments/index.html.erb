@@ -1,6 +1,9 @@
 <div class="w-full h-16 border-b-2 border-black border-solid flex items-center justify-between drop-shadow-lg">
   <h1 class="ml-6">Shipments</h1>
-  <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'inline-block border border-red-700 border-solid w-20 h-8 text-red-700 rounded-md font-medium pt-0.5 text-center hover:bg-red-100 mr-7'%>
+  <div class="flex flex-row justify-center">
+    <%= link_to 'Account', edit_user_registration_path, class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-4" %>
+    <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-4'%>
+  </div>
 </div>
 
 <div class="mt-4 mx-6 flex items-center justify-between">
