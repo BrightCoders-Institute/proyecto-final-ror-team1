@@ -19,6 +19,6 @@ class Shipment < ApplicationRecord
   def tracking_shipment
     carrier_name = self.carrier.name
     new_data = "Carriers::TrackingRequester#{carrier_name.capitalize}".constantize.new(tracking_number: self.tracking_number, carrier_name: carrier_name).call
-    self.update(status: new_data[:status], tracking_history: new_data[:tracking_history])
+    self.update(status: new_data[:status], tracking_history: new_data[:tracking_history], destination: new_data[:destination])
   end
 end

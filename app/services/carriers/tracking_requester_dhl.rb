@@ -35,7 +35,8 @@ module Carriers
         tracking_number: @tracking_number,
         carrier: @carrier_name,
         status: find_parsed_rule(@response[:shipments].first[:status][:statusCode]).internal_code,
-        tracking_history: parse_events
+        tracking_history: parse_events,
+        destination: @response.[:shipments].first&.[](:destination)&.[](:address)&.values&.join(' ')
       }
     end
 
