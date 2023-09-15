@@ -17,6 +17,8 @@ class User < ApplicationRecord
   after_create :onboard_account
 
   def onboard_account
-    update(account_id: Account.create!(company_name: 'Bridgecoders'))
+    # We create a new account and assign it to the user
+    account = Account.create!(company_name: 'Bridgecoders')
+    update(account: account)
   end
 end
