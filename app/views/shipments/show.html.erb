@@ -4,16 +4,13 @@
 </div>
 
 <div class="flex w-full h-screen justify-center">
-
-  <div class="w-2/3">
-    <div class="w-full border-4 border-black h-48 shadow-lg">
-      <h1 class="ml-4 mb-1 mt-4 text-2xl text-gray-500">Client's name</h1>
+  <div class="w-auto">
+    <div class="w-full border-4 border-gray-100 h-48 shadow-lg">
+      <h1 class="ml-4 mb-1 mt-4 text-2xl text-gray-500">Status</h1>
       <div class="flex">
         <div class="ml-4 mt-1 rounded-full bg-sky-700 h-4 w-4"></div>
-        <p class="ml-2 text-sm mt-0.5 leading-snug font-semibold">Status</p>
+        <p class="ml-2 text-sm mt-0.5 leading-snug font-semibold"><%= @shipment.status %></p>
       </div>
-
-      <p class="ml-4 mt-2 text-sm leading-snug">Received: signed_by</p>
 
       <div class="flex ml-2 mr-4 mt-2 h-16 bg-slate-100">
         <div class="w-1/2">
@@ -22,56 +19,41 @@
         </div>
         <div class="w-1/6">
           <p class="ml-2 pt-3 text-sm leading-snug font-semibold">CREATED</p>
-          <p class="ml-2 pt-2 text-sm leading-snug truncate"><%= @shipment.created_at %></p>
+          <p class="ml-2 pt-2 text-sm leading-snug truncate">
+          <%= DateTime.parse(@shipment.created_at.to_s).strftime('%d-%b-%Y') %>
+          </p>
         </div>
         <div class="w-1/6">
           <p class="ml-2 pt-3 text-sm leading-snug font-semibold">CARRIER</p>
-          <p class="ml-2 pt-2 text-sm leading-snug">Fedex</p>
+          <p class="ml-2 pt-2 text-sm leading-snug"><%= @shipment.carrier.name %></p>
         </div>
         <div class="w-1/6">
-          <p class="ml-2 pt-3 text-sm leading-snug font-semibold">DESTINO</p>
-          <p class="ml-2 pt-2 text-sm leading-snug truncate">Guachimontones</p>
+          <p class="ml-2 pt-3 text-sm leading-snug font-semibold">DESTINATION</p>
+          <p class="ml-2 pt-2 text-sm leading-snug truncate"><%= @shipment.destination %></p>
         </div>
       </div>
     </div>
 
-    <div class="border-4 border-black w-full h-1/2 mt-4 shadow-lg">
-      <h1 class="ml-4 mt-4 mb-3 text-2xl text-gray-500">Follow up notifications</h1>
-      <div class="flex ml-8 mr-16 mt-2 h-11 bg-slate-100">
-        <div class="w-1/2">
-          <p class="ml-6 pt-3 text-sm leading-snug font-semibold">Notification</p>
-        </div>
-        <div class="w-1/4">
-          <p class="ml-2 pt-3 text-sm leading-snug font-semibold">Status</p>
-        </div>
-        <div class="w-1/4">
-          <p class="ml-2 pt-3 text-sm leading-snug font-semibold text-center">Notification date</p>
-        </div>
-      </div>
+    <div class="border-4 border-gray-100 w-full h-1/2 mt-4 shadow-lg">
+      <h1 class="ml-4 mt-4 mb-3 text-2xl text-gray-500">Shipment history</h1>
+      <% @shipment.tracking_history.each do |tracking| %>
+        <div class="w-full flex mt-2 h-12 ">
+          <div class="w-1/3 flex justify-between text-sm mt-4 px-8">
+            <p class="font-semibold"> <%= DateTime.parse(tracking["date"]).strftime('%d-%b-%Y') %> </p>
+            <p> <%= DateTime.parse(tracking["date"]).strftime('%I:%M %p') %> </p>
+          </div>
+          
+          <div class="relative">
+            <div class=" ml-0.5 mt-1 rounded-full bg-sky-700 h-5 w-5 border-4 border-blue-300"></div>
+            <div class=" ml-0 mt-5 h-12 min-h-full absolute z-0 top-0 bottom-0 left-1/2 border border-dashed border-blue-300"></div>
+          </div>
+
+          <div class="w-[55%] flex justify-between text-sm pt-4 ml-5">
+            <p class="font-semibold"> <%= tracking["description"] %></p>
+            <p> <%= tracking["location"] %></p>
+          </div>
+        </div>      
+      <%end%>
     </div>
-  </div>
-
-  <div class="border-4 border-black h-5/6 w-1/4 ml-6 ml-0 shadow-lg">
-    <h1 class="ml-7 mt-4 mb-3 text-2xl text-gray-500">Shipment history</h1>
-
-    <% @shipment.tracking_history.each do |tracking| %>
-      <div class="flex justify-start snap-y">
-        <div class="w-24 text-right text-sm mt-4 mx-4">
-          <p class="font-semibold"> <%= DateTime.parse(tracking["date"]).strftime('%d-%b-%Y') %> </p>
-          <p> <%= DateTime.parse(tracking["date"]).strftime('%I:%M %p') %> </p>
-        </div>
-    
-        <div class="relative">
-          <div class=" ml-0.5 mt-1 rounded-full bg-sky-700 h-5 w-5 border-4 border-blue-300"></div>
-          <div class=" ml-0 mt-5 h-20 min-h-full absolute z-0 top-0 bottom-0 left-1/2 border border-dashed border-blue-300"></div>
-        </div>
-
-        <div class="w-2/5 text-sm pt-4 ml-5">
-          <p class="font-semibold"> <%= tracking["description"] %></p>
-          <p> <%= tracking["location"] %></p>
-        </div>
-      </div>      
-      
-    <%end%>
   </div>
 </div>
