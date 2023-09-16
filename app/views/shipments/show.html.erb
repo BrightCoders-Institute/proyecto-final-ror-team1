@@ -1,11 +1,10 @@
-<div class="w-full h-16 flex items-center justify-between">
+<div class="w-full h-16 flex items-center justify-between border-b-2 border-black border-solid">
   <%= link_to 'My shipments', shipments_index_path, class: 'ml-14 inline-block border border-sky-700 border-solid w-32 h-8 text-sky-700 rounded-md font-medium pt-1 text-center hover:bg-sky-100' %>
   <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'inline-block border border-red-700 border-solid w-20 h-8 text-red-700 rounded-md font-medium pt-0.5 text-center hover:bg-red-100 mr-7'%>
 </div>
-
-<div class="flex w-full h-screen justify-center">
-  <div class="w-auto">
-    <div class="w-full border-4 border-gray-100 h-48 shadow-lg">
+<div class="flex w-full h-screen justify-center mt-4">
+  <div class="w-3/4">
+    <div class="w-full border-4 border-gray-100 h-48 shadow-lg ">
       <h1 class="ml-4 mb-1 mt-4 text-2xl text-gray-500">Status</h1>
       <div class="flex">
         <div class="ml-4 mt-1 rounded-full bg-sky-700 h-4 w-4"></div>
@@ -34,7 +33,7 @@
       </div>
     </div>
 
-    <div class="border-4 border-gray-100 w-full h-1/2 mt-4 shadow-lg">
+    <div class="border-4 border-gray-100 w-full h-1/2 mt-4 shadow-lg overflow-scroll">
       <h1 class="ml-4 mt-4 mb-3 text-2xl text-gray-500">Shipment history</h1>
       <% @shipment.tracking_history.each do |tracking| %>
         <div class="w-full flex mt-2 h-12 ">

@@ -15,7 +15,7 @@ module Carriers
     end
 
     private
-
+    binding.pry
     def request_shipment
       api_key = ENV['DHL_API_KEY']
       request_url = "#{carrier.url}#{@tracking_number}"

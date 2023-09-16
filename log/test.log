@@ -3022,3 +3022,783 @@ UserTest: test_should_validate_inclusion_of_role
   [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user2@example.com"], ["LIMIT", 1]]
   [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user2@example.com"], ["LIMIT", 1]]
   [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (2.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (39.9ms)[0m  [1m[35mDROP DATABASE IF EXISTS "shipments_tracker_test"[0m
+  [1m[35m (132.0ms)[0m  [1m[35mCREATE DATABASE "shipments_tracker_test" ENCODING = 'unicode'[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[35mCREATE EXTENSION IF NOT EXISTS "plpgsql"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE IF EXISTS "accounts" CASCADE[0m
+  [1m[35m (6.6ms)[0m  [1m[35mCREATE TABLE "accounts" ("id" bigserial primary key, "company_name" character varying, "active" boolean DEFAULT TRUE NOT NULL, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "carriers" CASCADE[0m
+  [1m[35m (1.7ms)[0m  [1m[35mCREATE TABLE "carriers" ("id" bigserial primary key, "name" character varying NOT NULL, "url" character varying NOT NULL, "settings" jsonb, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.3ms)[0m  [1m[35mDROP TABLE IF EXISTS "parser_rules" CASCADE[0m
+  [1m[35m (2.0ms)[0m  [1m[35mCREATE TABLE "parser_rules" ("id" bigserial primary key, "code" character varying, "description" text, "internal_code" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "carrier_id" bigint)[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE INDEX "index_parser_rules_on_carrier_id" ON "parser_rules" ("carrier_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "shipments" CASCADE[0m
+  [1m[35m (2.1ms)[0m  [1m[35mCREATE TABLE "shipments" ("id" bigserial primary key, "account_id" bigint, "status" character varying, "tracking_number" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "tracking_history" jsonb DEFAULT '{}', "carrier_id" bigint, "destination" character varying)[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE INDEX "index_shipments_on_account_id" ON "shipments" ("account_id")[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE INDEX "index_shipments_on_carrier_id" ON "shipments" ("carrier_id")[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_shipments_on_id" ON "shipments" ("id")[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE INDEX "index_shipments_on_tracking_number" ON "shipments" ("tracking_number")[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE IF EXISTS "users" CASCADE[0m
+  [1m[35m (2.0ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "email" character varying, "encrypted_password" character varying, "reset_password_token" character varying, "reset_password_sent_at" timestamp(6), "remember_created_at" timestamp(6), "confirmation_token" character varying, "confirmed_at" timestamp(6), "confirmation_sent_at" timestamp(6), "unconfirmed_email" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL, "account_id" bigint, "role" character varying DEFAULT 'owner')[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE INDEX "index_users_on_account_id" ON "users" ("account_id")[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_confirmation_token" ON "users" ("confirmation_token")[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_reset_password_token" ON "users" ("reset_password_token")[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES (20230914015102)[0m
+  [1m[35m (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" (version) VALUES
+(20230801222313),
+(20230802162213),
+(20230803003606),
+(20230803024435),
+(20230803025534),
+(20230804000126),
+(20230804004847),
+(20230804214644),
+(20230805000101),
+(20230805000340),
+(20230805000733),
+(20230805005552),
+(20230805010511),
+(20230810004655);
+
+[0m
+  [1m[35m (1.9ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "test"], ["created_at", "2023-09-16 00:51:01.045005"], ["updated_at", "2023-09-16 00:51:01.045005"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.1ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "schema_sha1"], ["value", "2f1f40f30c5d85f0d4ead718bb209a8d5ee0419f"], ["created_at", "2023-09-16 00:51:01.048189"], ["updated_at", "2023-09-16 00:51:01.048189"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.8ms)[0m  [1m[35mALTER TABLE "accounts" DISABLE TRIGGER ALL;ALTER TABLE "carriers" DISABLE TRIGGER ALL;ALTER TABLE "parser_rules" DISABLE TRIGGER ALL;ALTER TABLE "shipments" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.9ms)[0m  [1m[31mDELETE FROM "accounts";
+DELETE FROM "carriers";
+DELETE FROM "parser_rules";
+DELETE FROM "users";
+INSERT INTO "accounts" ("id", "company_name", "active", "created_at", "updated_at") VALUES (980190962, DEFAULT, DEFAULT, '2023-09-16 00:51:01.136452', '2023-09-16 00:51:01.136452'), (298486374, DEFAULT, DEFAULT, '2023-09-16 00:51:01.136452', '2023-09-16 00:51:01.136452');
+INSERT INTO "carriers" ("id", "name", "url", "settings", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', '"MyString"', '2023-09-16 00:51:01.146471', '2023-09-16 00:51:01.146471'), (298486374, 'MyString', 'MyString', '"MyString"', '2023-09-16 00:51:01.146471', '2023-09-16 00:51:01.146471');
+INSERT INTO "parser_rules" ("id", "code", "description", "internal_code", "created_at", "updated_at", "carrier_id") VALUES (980190962, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:51:01.149562', '2023-09-16 00:51:01.149562', DEFAULT), (298486374, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:51:01.149562', '2023-09-16 00:51:01.149562', DEFAULT);
+INSERT INTO "users" ("id", "email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "account_id", "role") VALUES (980190962, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:51:01.152849', '2023-09-16 00:51:01.152849', DEFAULT, DEFAULT), (298486374, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:51:01.152849', '2023-09-16 00:51:01.152849', DEFAULT, DEFAULT)[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "accounts" ENABLE TRIGGER ALL;ALTER TABLE "carriers" ENABLE TRIGGER ALL;ALTER TABLE "parser_rules" ENABLE TRIGGER ALL;ALTER TABLE "shipments" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (38.7ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------------
+CarrierTest: test_should_not_save_carrier_with_invalid_url
+----------------------------------------------------------
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+CarrierTest: test_should_save_carrier_with_valid_data
+-----------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.6ms)[0m  [1m[32mINSERT INTO "carriers" ("id", "name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["id", 1], ["name", "DHL"], ["url", "https://www.dhl.com"], ["settings", nil], ["created_at", "2023-09-16 00:51:01.218568"], ["updated_at", "2023-09-16 00:51:01.218568"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------------------
+CarrierTest: test_should_not_save_carrier_without_name
+------------------------------------------------------
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+CarrierTest: test_should_not_save_carrier_without_url
+-----------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------
+ParserRuleTest: test_carrier_id_should_be_present
+-------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------
+ParserRuleTest: test_internal_code_should_be_present
+----------------------------------------------------
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------
+ParserRuleTest: test_code_should_be_present
+-------------------------------------------
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+ParserRuleTest: test_description_should_be_present
+--------------------------------------------------
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------
+ShipmentTest: test_should_be_valid
+----------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.2ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:51:01.238143"], ["updated_at", "2023-09-16 00:51:01.238143"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.1ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "FEDEX"], ["url", "https://fedex.com"], ["settings", nil], ["created_at", "2023-09-16 00:51:01.238948"], ["updated_at", "2023-09-16 00:51:01.238948"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "ABC123"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.1ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190963], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190963], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------
+ShipmentTest: test_should_require_account_id
+--------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.3ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:51:01.251687"], ["updated_at", "2023-09-16 00:51:01.251687"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.3ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "FEDEX"], ["url", "https://fedex.com"], ["settings", nil], ["created_at", "2023-09-16 00:51:01.252640"], ["updated_at", "2023-09-16 00:51:01.252640"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "ABC123"], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.2ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190964], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------
+ShipmentTest: test_should_require_status
+----------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.2ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:51:01.258780"], ["updated_at", "2023-09-16 00:51:01.258780"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.2ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "FEDEX"], ["url", "https://fedex.com"], ["settings", nil], ["created_at", "2023-09-16 00:51:01.259582"], ["updated_at", "2023-09-16 00:51:01.259582"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "ABC123"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.1ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190965], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190965], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------------
+AccountTest: test_should_save_account_with_valid_attributes
+-----------------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.2ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "Example Company"], ["active", true], ["created_at", "2023-09-16 00:51:01.262941"], ["updated_at", "2023-09-16 00:51:01.262941"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------------------
+AccountTest: test_should_not_save_account_without_company_name
+--------------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------------------------
+Carriers::TrackingRequesterDhlTest: test_tracking_history_not_empty
+-------------------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:51:01.264601"], ["updated_at", "2023-09-16 00:51:01.264601"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.1ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "DHL"], ["url", "https://api-test.dhl.com/track/shipments?trackingNumber="], ["settings", nil], ["created_at", "2023-09-16 00:51:01.265076"], ["updated_at", "2023-09-16 00:51:01.265076"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "3484059994"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.1ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190967], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.0ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190966], ["LIMIT", 1]]
+  [1m[36mShipment Create (0.8ms)[0m  [1m[32mINSERT INTO "shipments" ("account_id", "status", "tracking_number", "created_at", "updated_at", "tracking_history", "carrier_id", "destination") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["account_id", 980190967], ["status", "REGISTERED"], ["tracking_number", "3484059994"], ["created_at", "2023-09-16 00:51:01.266474"], ["updated_at", "2023-09-16 00:51:01.266474"], ["tracking_history", "[]"], ["carrier_id", 980190966], ["destination", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------------------------
+Carriers::TrackingRequesterDhlTest: test_tracking_history_has_12_events
+-----------------------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:51:01.269214"], ["updated_at", "2023-09-16 00:51:01.269214"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.1ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "DHL"], ["url", "https://api-test.dhl.com/track/shipments?trackingNumber="], ["settings", nil], ["created_at", "2023-09-16 00:51:01.269808"], ["updated_at", "2023-09-16 00:51:01.269808"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "3484059994"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.3ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190968], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190967], ["LIMIT", 1]]
+  [1m[36mShipment Create (0.3ms)[0m  [1m[32mINSERT INTO "shipments" ("account_id", "status", "tracking_number", "created_at", "updated_at", "tracking_history", "carrier_id", "destination") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["account_id", 980190968], ["status", "REGISTERED"], ["tracking_number", "3484059994"], ["created_at", "2023-09-16 00:51:01.271470"], ["updated_at", "2023-09-16 00:51:01.271470"], ["tracking_history", "[]"], ["carrier_id", 980190967], ["destination", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+UserTest: test_should_validate_uniqueness_of_email
+--------------------------------------------------
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user1@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user1@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user1@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user1@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------
+UserTest: test_should_not_save_user_without_email
+-------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+UserTest: test_should_validate_presence_of_account_id
+-----------------------------------------------------
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user3@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user3@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+UserTest: test_should_save_user_with_valid_attributes
+-----------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------------
+UserTest: test_should_validate_inclusion_of_role
+------------------------------------------------
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user2@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user2@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "accounts" DISABLE TRIGGER ALL;ALTER TABLE "carriers" DISABLE TRIGGER ALL;ALTER TABLE "parser_rules" DISABLE TRIGGER ALL;ALTER TABLE "shipments" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (1.7ms)[0m  [1m[31mDELETE FROM "accounts";
+DELETE FROM "carriers";
+DELETE FROM "parser_rules";
+DELETE FROM "users";
+INSERT INTO "accounts" ("id", "company_name", "active", "created_at", "updated_at") VALUES (980190962, DEFAULT, DEFAULT, '2023-09-16 00:51:29.360913', '2023-09-16 00:51:29.360913'), (298486374, DEFAULT, DEFAULT, '2023-09-16 00:51:29.360913', '2023-09-16 00:51:29.360913');
+INSERT INTO "carriers" ("id", "name", "url", "settings", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', '"MyString"', '2023-09-16 00:51:29.382464', '2023-09-16 00:51:29.382464'), (298486374, 'MyString', 'MyString', '"MyString"', '2023-09-16 00:51:29.382464', '2023-09-16 00:51:29.382464');
+INSERT INTO "parser_rules" ("id", "code", "description", "internal_code", "created_at", "updated_at", "carrier_id") VALUES (980190962, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:51:29.385771', '2023-09-16 00:51:29.385771', DEFAULT), (298486374, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:51:29.385771', '2023-09-16 00:51:29.385771', DEFAULT);
+INSERT INTO "users" ("id", "email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "account_id", "role") VALUES (980190962, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:51:29.388903', '2023-09-16 00:51:29.388903', DEFAULT, DEFAULT), (298486374, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:51:29.388903', '2023-09-16 00:51:29.388903', DEFAULT, DEFAULT)[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.1ms)[0m  [1m[35mALTER TABLE "accounts" ENABLE TRIGGER ALL;ALTER TABLE "carriers" ENABLE TRIGGER ALL;ALTER TABLE "parser_rules" ENABLE TRIGGER ALL;ALTER TABLE "shipments" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (6.3ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------------------
+AccountTest: test_should_not_save_account_without_company_name
+--------------------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------------
+AccountTest: test_should_save_account_with_valid_attributes
+-----------------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.3ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "Example Company"], ["active", true], ["created_at", "2023-09-16 00:51:29.420318"], ["updated_at", "2023-09-16 00:51:29.420318"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------------
+CarrierTest: test_should_not_save_carrier_with_invalid_url
+----------------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+CarrierTest: test_should_not_save_carrier_without_url
+-----------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------------------
+CarrierTest: test_should_not_save_carrier_without_name
+------------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+CarrierTest: test_should_save_carrier_with_valid_data
+-----------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.2ms)[0m  [1m[32mINSERT INTO "carriers" ("id", "name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["id", 1], ["name", "DHL"], ["url", "https://www.dhl.com"], ["settings", nil], ["created_at", "2023-09-16 00:51:29.428548"], ["updated_at", "2023-09-16 00:51:29.428548"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------------------------
+Carriers::TrackingRequesterDhlTest: test_tracking_history_has_12_events
+-----------------------------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:51:29.430028"], ["updated_at", "2023-09-16 00:51:29.430028"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.2ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "DHL"], ["url", "https://api-test.dhl.com/track/shipments?trackingNumber="], ["settings", nil], ["created_at", "2023-09-16 00:51:29.430648"], ["updated_at", "2023-09-16 00:51:29.430648"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "3484059994"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.1ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190964], ["LIMIT", 1]]
+  [1m[36mCarrier Load (11.2ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190963], ["LIMIT", 1]]
+  [1m[36mShipment Create (1.8ms)[0m  [1m[32mINSERT INTO "shipments" ("account_id", "status", "tracking_number", "created_at", "updated_at", "tracking_history", "carrier_id", "destination") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["account_id", 980190964], ["status", "REGISTERED"], ["tracking_number", "3484059994"], ["created_at", "2023-09-16 00:51:29.456396"], ["updated_at", "2023-09-16 00:51:29.456396"], ["tracking_history", "[]"], ["carrier_id", 980190963], ["destination", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------------------------
+Carriers::TrackingRequesterDhlTest: test_tracking_history_not_empty
+-------------------------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.2ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:51:29.464176"], ["updated_at", "2023-09-16 00:51:29.464176"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.1ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "DHL"], ["url", "https://api-test.dhl.com/track/shipments?trackingNumber="], ["settings", nil], ["created_at", "2023-09-16 00:51:29.465071"], ["updated_at", "2023-09-16 00:51:29.465071"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "3484059994"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.1ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190965], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190964], ["LIMIT", 1]]
+  [1m[36mShipment Create (0.2ms)[0m  [1m[32mINSERT INTO "shipments" ("account_id", "status", "tracking_number", "created_at", "updated_at", "tracking_history", "carrier_id", "destination") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["account_id", 980190965], ["status", "REGISTERED"], ["tracking_number", "3484059994"], ["created_at", "2023-09-16 00:51:29.466951"], ["updated_at", "2023-09-16 00:51:29.466951"], ["tracking_history", "[]"], ["carrier_id", 980190964], ["destination", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------
+ShipmentTest: test_should_be_valid
+----------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.2ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:51:29.469192"], ["updated_at", "2023-09-16 00:51:29.469192"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.1ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "FEDEX"], ["url", "https://fedex.com"], ["settings", nil], ["created_at", "2023-09-16 00:51:29.469881"], ["updated_at", "2023-09-16 00:51:29.469881"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "ABC123"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.1ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190966], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190965], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------
+ShipmentTest: test_should_require_status
+----------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:51:29.472126"], ["updated_at", "2023-09-16 00:51:29.472126"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.1ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "FEDEX"], ["url", "https://fedex.com"], ["settings", nil], ["created_at", "2023-09-16 00:51:29.472745"], ["updated_at", "2023-09-16 00:51:29.472745"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "ABC123"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.2ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190967], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190966], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------
+ShipmentTest: test_should_require_account_id
+--------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.2ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:51:29.475186"], ["updated_at", "2023-09-16 00:51:29.475186"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.2ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "FEDEX"], ["url", "https://fedex.com"], ["settings", nil], ["created_at", "2023-09-16 00:51:29.475870"], ["updated_at", "2023-09-16 00:51:29.475870"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "ABC123"], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190967], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------------
+UserTest: test_should_validate_inclusion_of_role
+------------------------------------------------
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user2@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user2@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------
+UserTest: test_should_not_save_user_without_email
+-------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+UserTest: test_should_validate_uniqueness_of_email
+--------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user1@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user1@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user1@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user1@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+UserTest: test_should_save_user_with_valid_attributes
+-----------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.4ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+UserTest: test_should_validate_presence_of_account_id
+-----------------------------------------------------
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user3@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user3@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------
+ParserRuleTest: test_carrier_id_should_be_present
+-------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+ParserRuleTest: test_description_should_be_present
+--------------------------------------------------
+  [1m[36mCarrier Load (0.3ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------
+ParserRuleTest: test_code_should_be_present
+-------------------------------------------
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------
+ParserRuleTest: test_internal_code_should_be_present
+----------------------------------------------------
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.5ms)[0m  [1m[35mALTER TABLE "accounts" DISABLE TRIGGER ALL;ALTER TABLE "carriers" DISABLE TRIGGER ALL;ALTER TABLE "parser_rules" DISABLE TRIGGER ALL;ALTER TABLE "shipments" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (2.1ms)[0m  [1m[31mDELETE FROM "accounts";
+DELETE FROM "carriers";
+DELETE FROM "parser_rules";
+DELETE FROM "users";
+INSERT INTO "accounts" ("id", "company_name", "active", "created_at", "updated_at") VALUES (980190962, DEFAULT, DEFAULT, '2023-09-16 00:52:50.989694', '2023-09-16 00:52:50.989694'), (298486374, DEFAULT, DEFAULT, '2023-09-16 00:52:50.989694', '2023-09-16 00:52:50.989694');
+INSERT INTO "carriers" ("id", "name", "url", "settings", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', '"MyString"', '2023-09-16 00:52:51.011041', '2023-09-16 00:52:51.011041'), (298486374, 'MyString', 'MyString', '"MyString"', '2023-09-16 00:52:51.011041', '2023-09-16 00:52:51.011041');
+INSERT INTO "parser_rules" ("id", "code", "description", "internal_code", "created_at", "updated_at", "carrier_id") VALUES (980190962, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:52:51.018804', '2023-09-16 00:52:51.018804', DEFAULT), (298486374, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:52:51.018804', '2023-09-16 00:52:51.018804', DEFAULT);
+INSERT INTO "users" ("id", "email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "account_id", "role") VALUES (980190962, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:52:51.022446', '2023-09-16 00:52:51.022446', DEFAULT, DEFAULT), (298486374, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:52:51.022446', '2023-09-16 00:52:51.022446', DEFAULT, DEFAULT)[0m
+  [1m[36mTRANSACTION (1.3ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "accounts" ENABLE TRIGGER ALL;ALTER TABLE "carriers" ENABLE TRIGGER ALL;ALTER TABLE "parser_rules" ENABLE TRIGGER ALL;ALTER TABLE "shipments" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (5.4ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------------------
+AccountTest: test_should_not_save_account_without_company_name
+--------------------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------------
+AccountTest: test_should_save_account_with_valid_attributes
+-----------------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.3ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "Example Company"], ["active", true], ["created_at", "2023-09-16 00:52:51.052399"], ["updated_at", "2023-09-16 00:52:51.052399"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------------
+UserTest: test_should_validate_inclusion_of_role
+------------------------------------------------
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user2@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user2@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------
+UserTest: test_should_not_save_user_without_email
+-------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+UserTest: test_should_validate_uniqueness_of_email
+--------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user1@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user1@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user1@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user1@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+UserTest: test_should_validate_presence_of_account_id
+-----------------------------------------------------
+  [1m[36mUser Exists? (0.4ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user3@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user3@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+UserTest: test_should_save_user_with_valid_attributes
+-----------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mUser Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user@example.com"], ["LIMIT", 1]]
+  [1m[36mCACHE User Exists? (0.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "user@example.com"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------
+ShipmentTest: test_should_be_valid
+----------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.2ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:52:51.067950"], ["updated_at", "2023-09-16 00:52:51.067950"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.1ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "FEDEX"], ["url", "https://fedex.com"], ["settings", nil], ["created_at", "2023-09-16 00:52:51.071407"], ["updated_at", "2023-09-16 00:52:51.071407"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "ABC123"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.2ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190964], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.2ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190963], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------
+ShipmentTest: test_should_require_status
+----------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.2ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:52:51.086416"], ["updated_at", "2023-09-16 00:52:51.086416"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.1ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "FEDEX"], ["url", "https://fedex.com"], ["settings", nil], ["created_at", "2023-09-16 00:52:51.087122"], ["updated_at", "2023-09-16 00:52:51.087122"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "ABC123"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.1ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190965], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190964], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------
+ShipmentTest: test_should_require_account_id
+--------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:52:51.089005"], ["updated_at", "2023-09-16 00:52:51.089005"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.1ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "FEDEX"], ["url", "https://fedex.com"], ["settings", nil], ["created_at", "2023-09-16 00:52:51.089540"], ["updated_at", "2023-09-16 00:52:51.089540"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "ABC123"], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190965], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------------------------
+Carriers::TrackingRequesterDhlTest: test_tracking_history_has_12_events
+-----------------------------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.2ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:52:51.094705"], ["updated_at", "2023-09-16 00:52:51.094705"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.4ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "DHL"], ["url", "https://api-test.dhl.com/track/shipments?trackingNumber="], ["settings", nil], ["created_at", "2023-09-16 00:52:51.095565"], ["updated_at", "2023-09-16 00:52:51.095565"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "3484059994"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.1ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190967], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190966], ["LIMIT", 1]]
+  [1m[36mShipment Create (0.6ms)[0m  [1m[32mINSERT INTO "shipments" ("account_id", "status", "tracking_number", "created_at", "updated_at", "tracking_history", "carrier_id", "destination") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["account_id", 980190967], ["status", "REGISTERED"], ["tracking_number", "3484059994"], ["created_at", "2023-09-16 00:52:51.098060"], ["updated_at", "2023-09-16 00:52:51.098060"], ["tracking_history", "[]"], ["carrier_id", 980190966], ["destination", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------------------------
+Carriers::TrackingRequesterDhlTest: test_tracking_history_not_empty
+-------------------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.1ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:52:51.100986"], ["updated_at", "2023-09-16 00:52:51.100986"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.1ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "DHL"], ["url", "https://api-test.dhl.com/track/shipments?trackingNumber="], ["settings", nil], ["created_at", "2023-09-16 00:52:51.101558"], ["updated_at", "2023-09-16 00:52:51.101558"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "3484059994"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.1ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190968], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190967], ["LIMIT", 1]]
+  [1m[36mShipment Create (0.1ms)[0m  [1m[32mINSERT INTO "shipments" ("account_id", "status", "tracking_number", "created_at", "updated_at", "tracking_history", "carrier_id", "destination") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["account_id", 980190968], ["status", "REGISTERED"], ["tracking_number", "3484059994"], ["created_at", "2023-09-16 00:52:51.102968"], ["updated_at", "2023-09-16 00:52:51.102968"], ["tracking_history", "[]"], ["carrier_id", 980190967], ["destination", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+CarrierTest: test_should_not_save_carrier_without_url
+-----------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------------
+CarrierTest: test_should_not_save_carrier_with_invalid_url
+----------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------
+CarrierTest: test_should_save_carrier_with_valid_data
+-----------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.2ms)[0m  [1m[32mINSERT INTO "carriers" ("id", "name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6) RETURNING "id"[0m  [["id", 1], ["name", "DHL"], ["url", "https://www.dhl.com"], ["settings", nil], ["created_at", "2023-09-16 00:52:51.105356"], ["updated_at", "2023-09-16 00:52:51.105356"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+------------------------------------------------------
+CarrierTest: test_should_not_save_carrier_without_name
+------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+--------------------------------------------------
+ParserRuleTest: test_description_should_be_present
+--------------------------------------------------
+  [1m[36mCarrier Load (0.2ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------
+ParserRuleTest: test_carrier_id_should_be_present
+-------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+----------------------------------------------------
+ParserRuleTest: test_internal_code_should_be_present
+----------------------------------------------------
+  [1m[36mCarrier Load (0.1ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------
+ParserRuleTest: test_code_should_be_present
+-------------------------------------------
+  [1m[36mCarrier Load (0.9ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 5], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mActiveRecord::InternalMetadata Pluck (0.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "schema_sha1"], ["LIMIT", 1]]
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "accounts" DISABLE TRIGGER ALL;ALTER TABLE "carriers" DISABLE TRIGGER ALL;ALTER TABLE "parser_rules" DISABLE TRIGGER ALL;ALTER TABLE "shipments" DISABLE TRIGGER ALL;ALTER TABLE "users" DISABLE TRIGGER ALL;ALTER TABLE "schema_migrations" DISABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" DISABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.8ms)[0m  [1m[31mDELETE FROM "accounts";
+DELETE FROM "carriers";
+DELETE FROM "parser_rules";
+DELETE FROM "users";
+INSERT INTO "accounts" ("id", "company_name", "active", "created_at", "updated_at") VALUES (980190962, DEFAULT, DEFAULT, '2023-09-16 00:53:20.716263', '2023-09-16 00:53:20.716263'), (298486374, DEFAULT, DEFAULT, '2023-09-16 00:53:20.716263', '2023-09-16 00:53:20.716263');
+INSERT INTO "carriers" ("id", "name", "url", "settings", "created_at", "updated_at") VALUES (980190962, 'MyString', 'MyString', '"MyString"', '2023-09-16 00:53:20.720917', '2023-09-16 00:53:20.720917'), (298486374, 'MyString', 'MyString', '"MyString"', '2023-09-16 00:53:20.720917', '2023-09-16 00:53:20.720917');
+INSERT INTO "parser_rules" ("id", "code", "description", "internal_code", "created_at", "updated_at", "carrier_id") VALUES (980190962, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:53:20.723464', '2023-09-16 00:53:20.723464', DEFAULT), (298486374, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:53:20.723464', '2023-09-16 00:53:20.723464', DEFAULT);
+INSERT INTO "users" ("id", "email", "encrypted_password", "reset_password_token", "reset_password_sent_at", "remember_created_at", "confirmation_token", "confirmed_at", "confirmation_sent_at", "unconfirmed_email", "created_at", "updated_at", "account_id", "role") VALUES (980190962, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:53:20.727486', '2023-09-16 00:53:20.727486', DEFAULT, DEFAULT), (298486374, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, '2023-09-16 00:53:20.727486', '2023-09-16 00:53:20.727486', DEFAULT, DEFAULT)[0m
+  [1m[36mTRANSACTION (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mALTER TABLE "accounts" ENABLE TRIGGER ALL;ALTER TABLE "carriers" ENABLE TRIGGER ALL;ALTER TABLE "parser_rules" ENABLE TRIGGER ALL;ALTER TABLE "shipments" ENABLE TRIGGER ALL;ALTER TABLE "users" ENABLE TRIGGER ALL;ALTER TABLE "schema_migrations" ENABLE TRIGGER ALL;ALTER TABLE "ar_internal_metadata" ENABLE TRIGGER ALL[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (8.2ms)[0m  [1m[35mdo $$
+  declare r record;
+BEGIN
+FOR r IN (
+  SELECT FORMAT(
+    'UPDATE pg_constraint SET convalidated=false WHERE conname = ''%I'' AND connamespace::regnamespace = ''%I''::regnamespace; ALTER TABLE %I.%I VALIDATE CONSTRAINT %I;',
+    constraint_name,
+    table_schema,
+    table_schema,
+    table_name,
+    constraint_name
+  ) AS constraint_check
+  FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'
+)
+  LOOP
+    EXECUTE (r.constraint_check);
+  END LOOP;
+END;
+$$;
+[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+-----------------------------------------------------------------------
+Carriers::TrackingRequesterDhlTest: test_tracking_history_has_12_events
+-----------------------------------------------------------------------
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.5ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:53:20.759266"], ["updated_at", "2023-09-16 00:53:20.759266"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.2ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "DHL"], ["url", "https://api-test.dhl.com/track/shipments?trackingNumber="], ["settings", nil], ["created_at", "2023-09-16 00:53:20.763491"], ["updated_at", "2023-09-16 00:53:20.763491"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "3484059994"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.3ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190963], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.3ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190963], ["LIMIT", 1]]
+  [1m[36mShipment Create (0.4ms)[0m  [1m[32mINSERT INTO "shipments" ("account_id", "status", "tracking_number", "created_at", "updated_at", "tracking_history", "carrier_id", "destination") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["account_id", 980190963], ["status", "REGISTERED"], ["tracking_number", "3484059994"], ["created_at", "2023-09-16 00:53:20.778003"], ["updated_at", "2023-09-16 00:53:20.778003"], ["tracking_history", "[]"], ["carrier_id", 980190963], ["destination", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mBEGIN[0m
+-------------------------------------------------------------------
+Carriers::TrackingRequesterDhlTest: test_tracking_history_not_empty
+-------------------------------------------------------------------
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mAccount Create (0.2ms)[0m  [1m[32mINSERT INTO "accounts" ("company_name", "active", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["company_name", "test"], ["active", true], ["created_at", "2023-09-16 00:53:20.780556"], ["updated_at", "2023-09-16 00:53:20.780556"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mCarrier Create (0.1ms)[0m  [1m[32mINSERT INTO "carriers" ("name", "url", "settings", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["name", "DHL"], ["url", "https://api-test.dhl.com/track/shipments?trackingNumber="], ["settings", nil], ["created_at", "2023-09-16 00:53:20.781177"], ["updated_at", "2023-09-16 00:53:20.781177"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mRELEASE SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[35mSAVEPOINT active_record_1[0m
+  [1m[36mShipment Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "3484059994"], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.1ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 980190964], ["LIMIT", 1]]
+  [1m[36mCarrier Load (0.2ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 980190964], ["LIMIT", 1]]
+  [1m[36mShipment Create (0.2ms)[0m  [1m[32mINSERT INTO "shipments" ("account_id", "status", "tracking_number", "created_at", "updated_at", "tracking_history", "carrier_id", "destination") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["account_id", 980190964], ["status", "REGISTERED"], ["tracking_number", "3484059994"], ["created_at", "2023-09-16 00:53:20.782739"], ["updated_at", "2023-09-16 00:53:20.782739"], ["tracking_history", "[]"], ["carrier_id", 980190964], ["destination", nil]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK TO SAVEPOINT active_record_1[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[31mROLLBACK[0m
