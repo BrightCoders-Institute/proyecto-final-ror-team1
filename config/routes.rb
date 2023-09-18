@@ -17,5 +17,4 @@ Rails.application.routes.draw do
   get '/shipments/new', to: 'shipments#new', as: :new_shipment
   post '/shipments', to: 'shipments#create', as: 'create_shipment'
   get '/shipments/:id', to: 'shipments#show', as: 'shipment'
-
 end

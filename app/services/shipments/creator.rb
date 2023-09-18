@@ -1,6 +1,5 @@
 module Shipments
   class Creator
-
     def initialize(params = {})
       @params = params
       @carrier_name = @params[:carrier_name].upcase
@@ -13,15 +12,15 @@ module Shipments
 
       true
     rescue StandardError => e
-      raise ShipmentError.new("Error creating shipment: #{e.message}")
+      raise ShipmentError, "Error creating shipment: #{e.message}"
     end
 
     private
 
     def validate_fields_present
-      unless @params[:carrier_name].present? && @params[:tracking_number].present?
-        raise ShipmentError, 'Fields cannot be empty.'
-      end
+      return if @params[:carrier_name].present? && @params[:tracking_number].present?
+
+      raise ShipmentError, 'Fields cannot be empty.'
     end
 
     def set_carrier
@@ -37,7 +36,7 @@ module Shipments
     def shipment_params
       {
         status: 'REGISTERED',
-        tracking_number:  @params[:tracking_number],
+        tracking_number: @params[:tracking_number],
         carrier_id: @carrier.id,
         account_id: @params[:account_id]
       }

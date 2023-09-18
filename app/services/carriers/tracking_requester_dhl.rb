@@ -1,4 +1,3 @@
-
 module Carriers
   class TrackingRequesterDhl
     include HTTParty
@@ -15,7 +14,7 @@ module Carriers
     end
 
     private
-    binding.pry
+
     def request_shipment
       api_key = ENV['DHL_API_KEY']
       request_url = "#{carrier.url}#{@tracking_number}"
@@ -36,12 +35,11 @@ module Carriers
         carrier: @carrier_name,
         status: find_parsed_rule(@response[:shipments].first[:status][:statusCode]).internal_code,
         tracking_history: parse_events,
-        destination: @response.[:shipments].first&.[](:destination)&.[](:address)&.values&.join(' ')
+        destination: @response[:shipments].first&.[](:destination)&.[](:address)&.values&.join(' ')
       }
     end
 
     def parse_events
-
       @response[:shipments].first[:events].map do |event|
         parsed_rule = find_parsed_rule(event[:statusCode])
         {
@@ -51,7 +49,7 @@ module Carriers
           location: event&.[](:location)&.[](:address)&.values&.join(' '),
           description: event&.[](:description) || '',
           event_comment: '',
-          parser_rule_id:  parsed_rule.id
+          parser_rule_id: parsed_rule.id
         }
       end
     end
