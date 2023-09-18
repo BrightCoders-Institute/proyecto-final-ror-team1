@@ -63,7 +63,6 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'minitest'
   gem 'pry'
-  gem 'dotenv-rails'
 end
 
 group :development do
