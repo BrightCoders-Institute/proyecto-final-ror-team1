@@ -12193,3 +12193,378 @@ Processing by ShipmentsController#index as HTML
 Completed 200 OK in 9ms (Views: 6.3ms | ActiveRecord: 1.0ms | Allocations: 11937)
 
 
+Started GET "/" for 127.0.0.1 at 2023-09-18 21:15:26 -0600
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by ShipmentsController#index as HTML
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+Completed 401 Unauthorized in 19ms (ActiveRecord: 7.8ms | Allocations: 10295)
+
+
+Started GET "/users/sign_in" for 127.0.0.1 at 2023-09-18 21:15:26 -0600
+Processing by Devise::SessionsController#new as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering devise/sessions/new.html.erb within layouts/application
+  Rendered devise/sessions/new.html.erb within layouts/application (Duration: 6.5ms | Allocations: 4441)
+  Rendered layout layouts/application.html.erb (Duration: 9.7ms | Allocations: 7030)
+Completed 200 OK in 26ms (Views: 19.0ms | ActiveRecord: 0.0ms | Allocations: 31226)
+
+
+Started POST "/users/sign_in" for 127.0.0.1 at 2023-09-18 21:15:29 -0600
+Processing by Devise::SessionsController#create as HTML
+  Parameters: {"authenticity_token"=>"[FILTERED]", "user"=>{"email"=>"arnoldo@gmail.com", "password"=>"[FILTERED]", "remember_me"=>"0"}, "commit"=>"Log in"}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "arnoldo@gmail.com"], ["LIMIT", 1]]
+Redirected to http://127.0.0.1:3000/
+Completed 303 See Other in 277ms (ActiveRecord: 0.6ms | Allocations: 5972)
+
+
+Started GET "/" for 127.0.0.1 at 2023-09-18 21:15:29 -0600
+Processing by ShipmentsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.4ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 22], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:7:in `current_account'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/index.html.erb within layouts/application
+  [1m[36mCarrier Pluck (0.5ms)[0m  [1m[34mSELECT "carriers"."name" FROM "carriers"[0m
+  ↳ app/helpers/shipments_helper.rb:9:in `carrier_names'
+  [1m[36mShipment Load (1.6ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."account_id" = $1[0m  [["account_id", 22]]
+  ↳ app/views/shipments/index.html.erb:35
+  [1m[36mCarrier Load (0.4ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  [1m[36mCACHE Carrier Load (0.0ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  Rendered shipments/index.html.erb within layouts/application (Duration: 44.3ms | Allocations: 36475)
+  Rendered layout layouts/application.html.erb (Duration: 44.8ms | Allocations: 37239)
+Completed 200 OK in 65ms (Views: 15.3ms | ActiveRecord: 36.3ms | Allocations: 65569)
+
+
+Started GET "/users/edit" for 127.0.0.1 at 2023-09-18 21:15:32 -0600
+Processing by Devise::RegistrationsController#edit as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering devise/registrations/edit.html.erb within layouts/application
+  Rendered devise/shared/_error_messages.html.erb (Duration: 0.6ms | Allocations: 259)
+  Rendered devise/registrations/edit.html.erb within layouts/application (Duration: 3.6ms | Allocations: 3039)
+  Rendered layout layouts/application.html.erb (Duration: 4.3ms | Allocations: 3813)
+Completed 200 OK in 9ms (Views: 6.2ms | ActiveRecord: 0.3ms | Allocations: 6120)
+
+
+Started GET "/" for 127.0.0.1 at 2023-09-18 21:15:33 -0600
+Processing by ShipmentsController#index as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.4ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 22], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:7:in `current_account'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/index.html.erb within layouts/application
+  [1m[36mCarrier Pluck (0.3ms)[0m  [1m[34mSELECT "carriers"."name" FROM "carriers"[0m
+  ↳ app/helpers/shipments_helper.rb:9:in `carrier_names'
+  [1m[36mShipment Load (0.4ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."account_id" = $1[0m  [["account_id", 22]]
+  ↳ app/views/shipments/index.html.erb:35
+  [1m[36mCarrier Load (0.4ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  [1m[36mCACHE Carrier Load (0.0ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  Rendered shipments/index.html.erb within layouts/application (Duration: 9.4ms | Allocations: 3281)
+  Rendered layout layouts/application.html.erb (Duration: 10.9ms | Allocations: 3974)
+Completed 200 OK in 20ms (Views: 10.7ms | ActiveRecord: 2.0ms | Allocations: 6218)
+
+
+Started GET "/shipments/17" for 127.0.0.1 at 2023-09-18 21:15:38 -0600
+Processing by ShipmentsController#show as HTML
+  Parameters: {"id"=>"17"}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mShipment Load (0.3ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."id" = $1 LIMIT $2[0m  [["id", 17], ["LIMIT", 1]]
+  ↳ app/controllers/shipments_controller.rb:36:in `find_shipment'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/show.html.erb within layouts/application
+  [1m[36mCarrier Load (0.3ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/show.html.erb:26
+  Rendered shipments/show.html.erb within layouts/application (Duration: 3.5ms | Allocations: 2356)
+  Rendered layout layouts/application.html.erb (Duration: 4.2ms | Allocations: 3051)
+Completed 200 OK in 10ms (Views: 4.4ms | ActiveRecord: 1.1ms | Allocations: 5681)
+
+
+Started GET "/" for 127.0.0.1 at 2023-09-18 22:47:48 -0600
+  [1m[36mActiveRecord::SchemaMigration Pluck (1.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by ShipmentsController#index as HTML
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.9ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 22], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:7:in `current_account'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/index.html.erb within layouts/application
+  [1m[36mCarrier Pluck (0.3ms)[0m  [1m[34mSELECT "carriers"."name" FROM "carriers"[0m
+  ↳ app/helpers/shipments_helper.rb:9:in `carrier_names'
+  [1m[36mShipment Load (0.9ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."account_id" = $1[0m  [["account_id", 22]]
+  ↳ app/views/shipments/index.html.erb:35
+  [1m[36mCarrier Load (0.3ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  [1m[36mCACHE Carrier Load (0.0ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  Rendered shipments/index.html.erb within layouts/application (Duration: 56.4ms | Allocations: 36765)
+  Rendered layout layouts/application.html.erb (Duration: 60.6ms | Allocations: 39445)
+Completed 200 OK in 117ms (Views: 54.4ms | ActiveRecord: 25.0ms | Allocations: 97288)
+
+
+Started GET "/shipments/17" for 127.0.0.1 at 2023-09-18 22:47:51 -0600
+Processing by ShipmentsController#show as HTML
+  Parameters: {"id"=>"17"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mShipment Load (0.2ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."id" = $1 LIMIT $2[0m  [["id", 17], ["LIMIT", 1]]
+  ↳ app/controllers/shipments_controller.rb:36:in `find_shipment'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/show.html.erb within layouts/application
+  [1m[36mCarrier Load (0.3ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/show.html.erb:26
+  Rendered shipments/show.html.erb within layouts/application (Duration: 5.2ms | Allocations: 2352)
+  Rendered layout layouts/application.html.erb (Duration: 6.4ms | Allocations: 3047)
+Completed 200 OK in 14ms (Views: 6.8ms | ActiveRecord: 1.0ms | Allocations: 5679)
+
+
+Started GET "/shipments/17" for 127.0.0.1 at 2023-09-18 22:48:09 -0600
+Processing by ShipmentsController#show as HTML
+  Parameters: {"id"=>"17"}
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mShipment Load (0.4ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."id" = $1 LIMIT $2[0m  [["id", 17], ["LIMIT", 1]]
+  ↳ app/controllers/shipments_controller.rb:36:in `find_shipment'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/show.html.erb within layouts/application
+  [1m[36mCarrier Load (10.8ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/show.html.erb:26
+  Rendered shipments/show.html.erb within layouts/application (Duration: 17.9ms | Allocations: 1803)
+  Rendered layout layouts/application.html.erb (Duration: 21.0ms | Allocations: 2498)
+Completed 200 OK in 31ms (Views: 11.3ms | ActiveRecord: 12.4ms | Allocations: 4496)
+
+
+Started GET "/shipments/17" for 127.0.0.1 at 2023-09-18 22:48:11 -0600
+Processing by ShipmentsController#show as HTML
+  Parameters: {"id"=>"17"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mShipment Load (0.3ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."id" = $1 LIMIT $2[0m  [["id", 17], ["LIMIT", 1]]
+  ↳ app/controllers/shipments_controller.rb:36:in `find_shipment'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/show.html.erb within layouts/application
+  [1m[36mCarrier Load (0.3ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/show.html.erb:26
+  Rendered shipments/show.html.erb within layouts/application (Duration: 3.7ms | Allocations: 1802)
+  Rendered layout layouts/application.html.erb (Duration: 4.9ms | Allocations: 2496)
+Completed 200 OK in 11ms (Views: 5.1ms | ActiveRecord: 1.0ms | Allocations: 4479)
+
+
+Started GET "/shipments/index" for 127.0.0.1 at 2023-09-18 22:48:20 -0600
+Processing by ShipmentsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.3ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 22], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:7:in `current_account'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/index.html.erb within layouts/application
+  [1m[36mCarrier Pluck (0.4ms)[0m  [1m[34mSELECT "carriers"."name" FROM "carriers"[0m
+  ↳ app/helpers/shipments_helper.rb:9:in `carrier_names'
+  [1m[36mShipment Load (0.5ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."account_id" = $1[0m  [["account_id", 22]]
+  ↳ app/views/shipments/index.html.erb:35
+  [1m[36mCarrier Load (0.2ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  [1m[36mCACHE Carrier Load (0.0ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  Rendered shipments/index.html.erb within layouts/application (Duration: 7.3ms | Allocations: 3281)
+  Rendered layout layouts/application.html.erb (Duration: 8.4ms | Allocations: 3975)
+Completed 200 OK in 15ms (Views: 7.9ms | ActiveRecord: 1.6ms | Allocations: 6227)
+
+
+Started GET "/shipments/16" for 127.0.0.1 at 2023-09-18 22:48:22 -0600
+Processing by ShipmentsController#show as HTML
+  Parameters: {"id"=>"16"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mShipment Load (0.4ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."id" = $1 LIMIT $2[0m  [["id", 16], ["LIMIT", 1]]
+  ↳ app/controllers/shipments_controller.rb:36:in `find_shipment'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/show.html.erb within layouts/application
+  [1m[36mCarrier Load (0.9ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/show.html.erb:26
+  Rendered shipments/show.html.erb within layouts/application (Duration: 4.4ms | Allocations: 1802)
+  Rendered layout layouts/application.html.erb (Duration: 5.3ms | Allocations: 2496)
+Completed 200 OK in 12ms (Views: 5.2ms | ActiveRecord: 1.7ms | Allocations: 4478)
+
+
+Started GET "/shipments/index" for 127.0.0.1 at 2023-09-18 22:48:28 -0600
+Processing by ShipmentsController#index as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.5ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 22], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:7:in `current_account'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/index.html.erb within layouts/application
+  [1m[36mCarrier Pluck (0.4ms)[0m  [1m[34mSELECT "carriers"."name" FROM "carriers"[0m
+  ↳ app/helpers/shipments_helper.rb:9:in `carrier_names'
+  [1m[36mShipment Load (0.4ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."account_id" = $1[0m  [["account_id", 22]]
+  ↳ app/views/shipments/index.html.erb:35
+  [1m[36mCarrier Load (0.5ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  [1m[36mCACHE Carrier Load (0.0ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  Rendered shipments/index.html.erb within layouts/application (Duration: 8.8ms | Allocations: 3281)
+  Rendered layout layouts/application.html.erb (Duration: 10.1ms | Allocations: 3975)
+Completed 200 OK in 20ms (Views: 9.7ms | ActiveRecord: 2.1ms | Allocations: 6225)
+
+
+Started GET "/shipments/new" for 127.0.0.1 at 2023-09-18 22:48:41 -0600
+Processing by ShipmentsController#new as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/new.html.erb within layouts/application
+  Rendered shipments/new.html.erb within layouts/application (Duration: 19.6ms | Allocations: 5026)
+  Rendered layout layouts/application.html.erb (Duration: 25.2ms | Allocations: 5728)
+Completed 200 OK in 35ms (Views: 26.3ms | ActiveRecord: 0.4ms | Allocations: 7342)
+
+
+Started POST "/shipments" for 127.0.0.1 at 2023-09-18 22:48:45 -0600
+Processing by ShipmentsController#create as HTML
+  Parameters: {"authenticity_token"=>"[FILTERED]", "shipment"=>{"carrier_name"=>"DHL", "tracking_number"=>"ghjnlk"}, "commit"=>"Create Shipment"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.4ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 22], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:7:in `current_account'
+  [1m[36mCarrier Load (0.3ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."name" = $1 LIMIT $2[0m  [["name", "DHL"], ["LIMIT", 1]]
+  ↳ app/services/shipments/creator.rb:27:in `set_carrier'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/services/shipments/creator.rb:31:in `create_shipment'
+  [1m[36mShipment Exists? (0.3ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 LIMIT $2[0m  [["tracking_number", "ghjnlk"], ["LIMIT", 1]]
+  ↳ app/services/shipments/creator.rb:31:in `create_shipment'
+  [1m[36mCACHE Account Load (0.0ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 22], ["LIMIT", 1]]
+  ↳ app/services/shipments/creator.rb:31:in `create_shipment'
+  [1m[36mCarrier Load (0.2ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/services/shipments/creator.rb:31:in `create_shipment'
+  [1m[36mShipment Create (5.0ms)[0m  [1m[32mINSERT INTO "shipments" ("account_id", "status", "tracking_number", "created_at", "updated_at", "tracking_history", "carrier_id", "destination") VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING "id"[0m  [["account_id", 22], ["status", "REGISTERED"], ["tracking_number", "ghjnlk"], ["created_at", "2023-09-19 04:48:45.822439"], ["updated_at", "2023-09-19 04:48:45.822439"], ["tracking_history", "{}"], ["carrier_id", 4], ["destination", nil]]
+  ↳ app/services/shipments/creator.rb:31:in `create_shipment'
+  [1m[36mCarrier Load (0.4ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."name" = $1 LIMIT $2[0m  [["name", "DHL"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:62:in `carrier'
+  [1m[36mParserRule Load (0.9ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "delivered"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mCACHE ParserRule Load (0.0ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "delivered"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mParserRule Load (0.4ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "transit"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mCACHE ParserRule Load (0.0ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "transit"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mCACHE ParserRule Load (0.0ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "transit"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mCACHE ParserRule Load (0.0ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "transit"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mCACHE ParserRule Load (0.0ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "transit"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mCACHE ParserRule Load (0.0ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "transit"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mCACHE ParserRule Load (0.0ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "transit"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mCACHE ParserRule Load (0.1ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "transit"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mParserRule Load (2.4ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "pre-transit"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mCACHE ParserRule Load (0.0ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "pre-transit"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mParserRule Load (0.5ms)[0m  [1m[34mSELECT "parser_rules".* FROM "parser_rules" WHERE "parser_rules"."carrier_id" = $1 AND "parser_rules"."code" = $2 LIMIT $3[0m  [["carrier_id", 4], ["code", "unknown"], ["LIMIT", 1]]
+  ↳ app/services/carriers/tracking_requester_dhl.rb:58:in `find_parsed_rule'
+  [1m[36mShipment Exists? (0.6ms)[0m  [1m[34mSELECT 1 AS one FROM "shipments" WHERE "shipments"."tracking_number" = $1 AND "shipments"."id" != $2 LIMIT $3[0m  [["tracking_number", "ghjnlk"], ["id", 18], ["LIMIT", 1]]
+  ↳ app/models/shipment.rb:24:in `tracking_shipment'
+  [1m[36mShipment Update (2.5ms)[0m  [1m[33mUPDATE "shipments" SET "status" = $1, "updated_at" = $2, "tracking_history" = $3, "destination" = $4 WHERE "shipments"."id" = $5[0m  [["status", "DELIVERED"], ["updated_at", "2023-09-19 04:48:46.670800"], ["tracking_history", "[{\"code\":\"delivered\",\"date\":\"2023-05-08T10:37:00\",\"status\":\"DELIVERED\",\"location\":\"US 89014 Henderson, NV, US\",\"description\":\"DELIVERED - PARCEL LOCKER\",\"event_comment\":\"\",\"parser_rule_id\":12},{\"code\":\"transit\",\"date\":\"2023-05-08T06:10:00\",\"status\":\"IN_TRANSIT\",\"location\":\"US 89014 Henderson, NV, US\",\"description\":\"\",\"event_comment\":\"\",\"parser_rule_id\":13},{\"code\":\"transit\",\"date\":\"2023-05-08T01:17:00\",\"status\":\"IN_TRANSIT\",\"location\":\"US 89012 Henderson, NV, US\",\"description\":\"\",\"event_comment\":\"\",\"parser_rule_id\":13},{\"code\":\"transit\",\"date\":\"2023-05-08T00:02:00\",\"status\":\"IN_TRANSIT\",\"location\":\"US 89012 Henderson, NV, US\",\"description\":\"\",\"event_comment\":\"\",\"parser_rule_id\":13},{\"code\":\"transit\",\"date\":\"2023-05-06T04:18:30\",\"status\":\"IN_TRANSIT\",\"location\":\"US 90601 Whittier, CA, US\",\"description\":\"\",\"event_comment\":\"\",\"parser_rule_id\":13},{\"code\":\"transit\",\"date\":\"2023-05-05T10:51:20\",\"status\":\"IN_TRANSIT\",\"location\":\"US 90601 Whittier, CA, US\",\"description\":\"\",\"event_comment\":\"\",\"parser_rule_id\":13},{\"code\":\"transit\",\"date\":\"2023-05-03T14:27:32\",\"status\":\"IN_TRANSIT\",\"location\":\"US 41048 Hebron, KY, US\",\"description\":\"\",\"event_comment\":\"\",\"parser_rule_id\":13},{\"code\":\"transit\",\"date\":\"2023-05-03T01:10:21\",\"status\":\"IN_TRANSIT\",\"location\":\"US 41048 Hebron, KY, US\",\"description\":\"\",\"event_comment\":\"\",\"parser_rule_id\":13},{\"code\":\"transit\",\"date\":\"2023-05-02T19:25:28\",\"status\":\"IN_TRANSIT\",\"location\":\"US 41048 Hebron, KY, US\",\"description\":\"\",\"event_comment\":\"\",\"parser_rule_id\":13},{\"code\":\"pre-transit\",\"date\":\"2023-05-01T14:11:21\",\"status\":\"REGISTERED\",\"location\":null,\"description\":\"\",\"event_comment\":\"\",\"parser_rule_id\":14},{\"code\":\"pre-transit\",\"date\":\"2023-05-01T14:05:23\",\"status\":\"REGISTERED\",\"location\":null,\"description\":\"\",\"event_comment\":\"\",\"parser_rule_id\":14},{\"code\":\"unknown\",\"date\":\"2023-05-01T10:02:48\",\"status\":null,\"location\":null,\"description\":\"\",\"event_comment\":\"\",\"parser_rule_id\":15}]"], ["destination", "US 89014 HENDERSON"], ["id", 18]]
+  ↳ app/models/shipment.rb:24:in `tracking_shipment'
+  [1m[36mTRANSACTION (1.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/services/shipments/creator.rb:31:in `create_shipment'
+Redirected to http://127.0.0.1:3000/shipments/index
+Completed 302 Found in 873ms (ActiveRecord: 22.1ms | Allocations: 41556)
+
+
+Started GET "/shipments/index" for 127.0.0.1 at 2023-09-18 22:48:46 -0600
+Processing by ShipmentsController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mAccount Load (0.3ms)[0m  [1m[34mSELECT "accounts".* FROM "accounts" WHERE "accounts"."id" = $1 LIMIT $2[0m  [["id", 22], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:7:in `current_account'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/index.html.erb within layouts/application
+  [1m[36mCarrier Pluck (0.2ms)[0m  [1m[34mSELECT "carriers"."name" FROM "carriers"[0m
+  ↳ app/helpers/shipments_helper.rb:9:in `carrier_names'
+  [1m[36mShipment Load (0.3ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."account_id" = $1[0m  [["account_id", 22]]
+  ↳ app/views/shipments/index.html.erb:35
+  [1m[36mCarrier Load (0.3ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  [1m[36mCACHE Carrier Load (0.0ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  [1m[36mCACHE Carrier Load (0.0ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/index.html.erb:39
+  Rendered shipments/index.html.erb within layouts/application (Duration: 6.9ms | Allocations: 3964)
+  Rendered layout layouts/application.html.erb (Duration: 21.6ms | Allocations: 4662)
+Completed 200 OK in 28ms (Views: 21.3ms | ActiveRecord: 1.3ms | Allocations: 6905)
+
+
+Started GET "/shipments/18" for 127.0.0.1 at 2023-09-18 22:48:48 -0600
+Processing by ShipmentsController#show as HTML
+  Parameters: {"id"=>"18"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mShipment Load (0.3ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."id" = $1 LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  ↳ app/controllers/shipments_controller.rb:36:in `find_shipment'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/show.html.erb within layouts/application
+  [1m[36mCarrier Load (0.3ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/show.html.erb:26
+  Rendered shipments/show.html.erb within layouts/application (Duration: 2.1ms | Allocations: 1802)
+  Rendered layout layouts/application.html.erb (Duration: 2.7ms | Allocations: 2496)
+Completed 200 OK in 7ms (Views: 2.8ms | ActiveRecord: 0.7ms | Allocations: 4480)
+
+
+Started GET "/shipments/18" for 127.0.0.1 at 2023-09-18 22:49:29 -0600
+Processing by ShipmentsController#show as HTML
+  Parameters: {"id"=>"18"}
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mShipment Load (0.9ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."id" = $1 LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  ↳ app/controllers/shipments_controller.rb:36:in `find_shipment'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/show.html.erb within layouts/application
+  [1m[36mCarrier Load (0.4ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/show.html.erb:26
+  Rendered shipments/show.html.erb within layouts/application (Duration: 6.6ms | Allocations: 1802)
+  Rendered layout layouts/application.html.erb (Duration: 10.1ms | Allocations: 2496)
+Completed 200 OK in 35ms (Views: 11.6ms | ActiveRecord: 2.5ms | Allocations: 4470)
+
+
+Started GET "/shipments/18" for 127.0.0.1 at 2023-09-18 22:49:30 -0600
+Processing by ShipmentsController#show as HTML
+  Parameters: {"id"=>"18"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mShipment Load (0.4ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."id" = $1 LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  ↳ app/controllers/shipments_controller.rb:36:in `find_shipment'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/show.html.erb within layouts/application
+  [1m[36mCarrier Load (0.3ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/show.html.erb:26
+  Rendered shipments/show.html.erb within layouts/application (Duration: 3.4ms | Allocations: 1802)
+  Rendered layout layouts/application.html.erb (Duration: 4.4ms | Allocations: 2496)
+Completed 200 OK in 11ms (Views: 4.8ms | ActiveRecord: 1.0ms | Allocations: 4459)
+
+
+Started GET "/shipments/18" for 127.0.0.1 at 2023-09-18 22:49:31 -0600
+Processing by ShipmentsController#show as HTML
+  Parameters: {"id"=>"18"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mShipment Load (0.3ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."id" = $1 LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  ↳ app/controllers/shipments_controller.rb:36:in `find_shipment'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/show.html.erb within layouts/application
+  [1m[36mCarrier Load (0.3ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/show.html.erb:26
+  Rendered shipments/show.html.erb within layouts/application (Duration: 2.5ms | Allocations: 1802)
+  Rendered layout layouts/application.html.erb (Duration: 3.2ms | Allocations: 2496)
+Completed 200 OK in 10ms (Views: 3.6ms | ActiveRecord: 0.8ms | Allocations: 4480)
+
+
+Started GET "/shipments/18" for 127.0.0.1 at 2023-09-18 22:50:14 -0600
+  [1m[36mActiveRecord::SchemaMigration Pluck (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by ShipmentsController#show as HTML
+  Parameters: {"id"=>"18"}
+  [1m[36mUser Load (11.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["id", 14], ["LIMIT", 1]]
+  [1m[36mShipment Load (1.1ms)[0m  [1m[34mSELECT "shipments".* FROM "shipments" WHERE "shipments"."id" = $1 LIMIT $2[0m  [["id", 18], ["LIMIT", 1]]
+  ↳ app/controllers/shipments_controller.rb:36:in `find_shipment'
+  Rendering layout layouts/application.html.erb
+  Rendering shipments/show.html.erb within layouts/application
+  [1m[36mCarrier Load (0.4ms)[0m  [1m[34mSELECT "carriers".* FROM "carriers" WHERE "carriers"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/views/shipments/show.html.erb:26
+  Rendered shipments/show.html.erb within layouts/application (Duration: 52.0ms | Allocations: 22798)
+  Rendered layout layouts/application.html.erb (Duration: 53.7ms | Allocations: 25486)
+Completed 200 OK in 110ms (Views: 52.3ms | ActiveRecord: 25.9ms | Allocations: 78391)
+
+
