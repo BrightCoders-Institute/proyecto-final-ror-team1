@@ -81,6 +81,7 @@ test:
 #
 production:
   <<: *default
-  database: shipments_tracker_production
-  username: shipments_tracker
-  password: <%= ENV["SHIPMENTS_TRACKER_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>
+  # database: <%= ENV["DATABASE_NAME"] %>
+  # username: <%= ENV["DATABASE_USERNAME"] %>
+  # password: <%= ENV["DATABASE_PASSWORD"] %>
