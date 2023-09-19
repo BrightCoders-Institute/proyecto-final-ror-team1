@@ -15,6 +15,10 @@
 
 /tmp/rubycritic/rubycritic-app/
 
+log/development.log
+app/assets/builds/*
+app/assets/builds/.keep
+
 # Ignore pidfiles, but keep the directory.
 /tmp/pids/*
 !/tmp/pids/
@@ -33,3 +37,5 @@
 /config/master.key
 tmp/rubycritic/.DS_Store
 .DS_Store
+*.env
+.env

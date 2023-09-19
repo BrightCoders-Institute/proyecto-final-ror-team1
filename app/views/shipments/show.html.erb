@@ -1,78 +1,68 @@
-  <a class="h-20 flex items-center ml-14 text-sky-700 text-sm font-semibold">
-    <%= link_to 'My shipments', shipment_path(@shipment) %>
-  </a>
-
-<div class="flex w-full h-screen justify-center">
-
-  <div class="w-2/3">
-    <div class="w-full border-4 border-black h-48 shadow-lg">
-      <h1 class="ml-4 mb-1 mt-4 text-2xl text-gray-500">Client's name</h1>
+<div class="w-full h-16 flex items-center justify-between border-b-2 border-black border-solid">
+  <%= link_to 'My shipments', shipments_index_path, class: 'ml-14 inline-block border border-sky-700 border-solid w-32 h-8 text-sky-700 rounded-md font-medium pt-1 text-center hover:bg-sky-100' %>
+  <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'inline-block border border-red-700 border-solid w-20 h-8 text-red-700 rounded-md font-medium pt-0.5 text-center hover:bg-red-100 mr-7'%>
+</div>
+<div class="flex w-full h-screen justify-center mt-4 ">
+  <div class="w-3/4">
+    <div class="w-full border-4 border-cyan-950 h-48 shadow-lg ">
+      <h1 class="ml-4 mb-1 mt-4 text-2xl text-gray-500 text-center">Status</h1>
       <div class="flex">
         <div class="ml-4 mt-1 rounded-full bg-sky-700 h-4 w-4"></div>
-        <p class="ml-2 text-sm mt-0.5 leading-snug font-semibold">Status</p>
+        <p class="ml-2 text-sm mt-0.5 leading-snug font-semibold"><%= @shipment.status %></p>
       </div>
-
-      <p class="ml-4 mt-2 text-sm leading-snug">Received: signed_by</p>
-
-      <div class="flex ml-2 mr-4 mt-2 h-16 bg-slate-100">
+      <div class="flex ml-2 mr-4 mt-2 h-16 bg-sky-50">
         <div class="w-1/2">
           <p class="ml-2 pt-3 text-sm leading-snug font-semibold">TRACKING NUMBER</p>
           <p class="ml-2 pt-2 text-sm leading-snug"><%= @shipment.tracking_number %></p>
         </div>
         <div class="w-1/6">
           <p class="ml-2 pt-3 text-sm leading-snug font-semibold">CREATED</p>
-          <p class="ml-2 pt-2 text-sm leading-snug truncate"><%= @shipment.created_at %></p>
+          <p class="ml-2 pt-2 text-sm leading-snug truncate">
+            <%= DateTime.parse(@shipment.created_at.to_s).strftime('%d-%b-%Y') %>
+          </p>
         </div>
         <div class="w-1/6">
           <p class="ml-2 pt-3 text-sm leading-snug font-semibold">CARRIER</p>
-          <p class="ml-2 pt-2 text-sm leading-snug">Fedex</p>
+          <p class="ml-2 pt-2 text-sm leading-snug"><%= @shipment.carrier.name %></p>
         </div>
         <div class="w-1/6">
-          <p class="ml-2 pt-3 text-sm leading-snug font-semibold">DESTINO</p>
-          <p class="ml-2 pt-2 text-sm leading-snug truncate">Guachimontones</p>
+          <p class="ml-2 pt-3 text-sm leading-snug font-semibold">DESTINATION</p>
+          <p class="ml-2 pt-2 text-sm leading-snug truncate"> <%= @shipment&.destination %></p>
         </div>
       </div>
     </div>
-
-    <div class="border-4 border-black w-full h-1/2 mt-4 shadow-lg">
-      <h1 class="ml-4 mt-4 mb-3 text-2xl text-gray-500">Follow up notifications</h1>
-      <div class="flex ml-8 mr-16 mt-2 h-11 bg-slate-100">
-        <div class="w-1/2">
-          <p class="ml-6 pt-3 text-sm leading-snug font-semibold">Notification</p>
+    <div class="border-4 border-cyan-950 w-full h-1/2 mt-4 shadow-lg overflow-scroll">
+      <h1 class="ml-4 mt-4 mb-3 text-2xl text-gray-500 text-center">Shipment history</h1>
+      <div class="w-full flex mt-2 h-12">
+        <div class="w-1/3 flex justify-between text-sm mt-4 px-8">
+          <h2 class="font-semibold">Date</h2>
         </div>
-        <div class="w-1/4">
-          <p class="ml-2 pt-3 text-sm leading-snug font-semibold">Status</p>
+        <div class="w-[55%] flex justify-between text-sm pt-4 ml-5">
+          <h2 class="font-semibold">Hour</h2>
         </div>
-        <div class="w-1/4">
-          <p class="ml-2 pt-3 text-sm leading-snug font-semibold text-center">Notification date</p>
+        <div class="w-[55%] flex justify-between text-sm pt-4 ml-5">
+          <h2 class="font-semibold">Status</h2>
+        </div>
+        <div class="w-[55%] flex justify-between text-sm pt-4 ml-5">
+          <h2 class="font-semibold">Location</h2>
         </div>
       </div>
-    </div>
-  </div>
-
-  <div class="border-4 border-black h-5/6 w-1/4 ml-6 ml-0 shadow-lg">
-    <h1 class="ml-7 mt-4 mb-3 text-2xl text-gray-500">Shipment history</h1>
-
-    <% @shipment.tracking_history.each do |tracking| %>
-      <div class="flex justify-start snap-y">
-        <div class="w-24 text-right text-sm mt-4 mx-4">
+      <% @shipment.tracking_history.each do |tracking| %>
+      <div class="w-full flex mt-2 h-12 ">
+        <div class="w-1/3 flex justify-between text-sm mt-4 px-8">
           <p class="font-semibold"> <%= DateTime.parse(tracking["date"]).strftime('%d-%b-%Y') %> </p>
           <p> <%= DateTime.parse(tracking["date"]).strftime('%I:%M %p') %> </p>
         </div>
-    
         <div class="relative">
           <div class=" ml-0.5 mt-1 rounded-full bg-sky-700 h-5 w-5 border-4 border-blue-300"></div>
-          <div class=" ml-0 mt-5 h-20 min-h-full absolute z-0 top-0 bottom-0 left-1/2 border border-dashed border-blue-300"></div>
+          <div class=" ml-0 mt-5 h-12 min-h-full absolute z-0 top-0 bottom-0 left-1/2 border border-dashed border-blue-300"></div>
         </div>
-
-        <div class="w-2/5 text-sm pt-4 ml-5">
+        <div class="w-[55%] flex justify-between text-sm pt-4 ml-5">
           <p class="font-semibold"> <%= tracking["description"] %></p>
           <p> <%= tracking["location"] %></p>
         </div>
-      </div>      
-      
-    <%end%>
+      </div>
+      <%end%>
+    </div>
   </div>
 </div>
-
-

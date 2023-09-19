@@ -10,12 +10,10 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-  <% flash.each do |key, value| %>
-    <div class="flash <%= key %>"><%= value %></div>
-  <% end %>
-    <main class="container mx-auto mt-28 px-5 flex">
-      <%= yield %>
-    </main>
+  <body class="h-screen bg-blue-100 bg-opacity-80">
+    <% flash.each do |key, value| %>
+      <div class="flash <%= key %>"><%= value %></div>
+    <% end %>
+    <%= yield %>
   </body>
 </html>

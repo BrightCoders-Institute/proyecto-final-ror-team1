@@ -1,34 +1,45 @@
-<h1>Shipments</h1>
-
-<%= form_tag shipments_index_path, method: :get do %>
-  <div>
-    <%= label_tag :status, "Status:" %>
-    <%= select_tag :status, options_for_select(shipment_statuses, params[:status]) %>
+<div class="w-full h-16 border-b-2 border-black border-solid flex items-center justify-between drop-shadow-lg">
+  <h1 class="ml-6 text-2xl font-semibold mb-4">Shipments</h1>
+  <div class="w-80 flex items-center justify-between">
+    <%= link_to 'Account', edit_user_registration_path, class: 'ml-14 inline-block border border-sky-700 border-solid w-32 h-8 text-sky-700 rounded-md font-medium pt-1 text-center hover:bg-sky-100' %>
+    <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: 'inline-block border border-red-700 border-solid w-20 h-8 text-red-700 rounded-md font-medium pt-0.5 text-center hover:bg-red-100 mr-7'%>
   </div>
+</div>
 
-  <div>
-    <%= label_tag :carrier_name, "Carrier:" %>
-    <%= select_tag :carrier_name, options_for_select(carrier_names, params[:carrier_name]) %>
-  </div>
+<div class="mt-4 mx-6 flex items-center justify-between">
+  <%= form_tag shipments_index_path, class: 'flex items-center', method: :get do %>
+    <%= label_tag :status, "Status", class: 'text-sky-700 font-medium' %>
+    <%= select_tag :status, options_for_select(shipment_statuses, params[:status]), class: 'w-40 h-9 pt-2 ml-2 text-sm font-medium text-gray-500 drop-shadow-lg border-0 rounded-md bg-sky-50' %>
 
-  <div>
-    <%= submit_tag "Filter" %>
-  </div>
-<% end %>
-<table>
-  <thead>
-    <tr>
-      <th>Status</th>
-      <th>Carrier</th>
-      <th>Tracking number</th>
+    <%= label_tag :carrier_name, "Carrier", class: 'ml-4 text-sky-700 font-medium' %>
+    <%= select_tag :carrier_name, options_for_select(carrier_names, params[:carrier_name]), class: 'w-40 h-9 pt-2 ml-2 text-sm font-medium text-gray-500 drop-shadow-lg border-0 rounded-md bg-sky-50' %>
+
+    <%= submit_tag "Filter", class: 'ml-6 border-2 border-sky-700 border-solid w-20 h-9 text-sky-700 rounded-md font-medium' %>
+  <% end %>
+
+    <%= link_to 'Add', :new_shipment, class: 'border-2 border-sky-700 border-solid w-24 h-11 text-sky-700 rounded-md font-medium pt-2 text-center'%>
+</div>
+
+<table class="mt-4 mx-6">
+  <thead class="bg-50 h-11">
+    <tr class="text-left pl-2">
+      <th class="pl-2 w-80">Created</th>
+      <th class="w-36">Receiver</th>
+      <th class="w-36">Carrier</th>
+      <th class="w-72">Tracking number</th>
+      <th class="w-36">Status</th>
+      <th class="w-36">Details</th>
     </tr>
   </thead>
   <tbody>
     <% @shipments.each do |shipment| %>
       <tr>
-        <td><%= shipment.status %></td>
+        <td class="pt-4 pl-2"><%= DateTime.parse(shipment.created_at.to_s).strftime('%d %b %Y') %></td>
+        <td>Receiver</td>
         <td><%= shipment.carrier.name %></td>
         <td><%= shipment.tracking_number %></td>
+        <td><%= shipment.status %></td>
+        <td><%= link_to 'Info', shipment, class: 'inline-block border-2 border-sky-700 border-solid w-12 h-8 text-sky-700 rounded-md font-medium pt-0.5 text-center hover:bg-slate-100'%></td>
       </tr>
     <% end %>
   </tbody>
